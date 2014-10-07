@@ -99,14 +99,47 @@ class updClass {
     } 
 %}
 
+white = [\r\t \n]
+letra = [a-zA-Z]
+digito = [0-9]
+ident = <letra>(<letra>|<digito>)*
+date = <digito><digito>/<digito><digito>/<digito><digito><digito><digito>
+name = '<letra><letra>'
+pclave = "(Accumulator|ProgramPC|Index|FlagVector|StackPointer)"
+bitMask = [10]+(x+(yz*)*)*
+
+
 %unicode
 %integer
+%line
+%state ident, date, name, use, bitSize, insBitCode, comment
+
 %%
-[\r\t \n]           {/*nada*/ }
-<YYINITIAL>"/*"           {yybegin(COMENT);}
-<COMENT>[^*]*"*/"         {System.out.println ("Comentario: <" + yytext().substring(0,yytext().length()-2)+">");
-                    yybegin (YYINITIAL);}
 
-<YYINITIAL>[^/]*  { }
+<YYINITIAL> "<comment>"   {yybegin(comment);}
+<comment>   .             {/*mientras comentario saltamos todo*/}
+<comment>   "</comment>"  {yybegin(YYINITIAL);} 
 
-.                   {System.out.println("-> Unknown");}
+<YYINITIAL> "<ident>"     {yybegin(ident);}
+<ident>     {ident}       {System.out.println("identificador");}
+<ident>     "</ident>"    {yybegin(YYINITIAL);}
+
+<YYINITIAL> "<date>"      {yybegin(date);}
+<date>      {date}        {/*add to class*/}
+<date>      "</date>"           {yybegin(YYINITIAL);}
+    
+<YYINITIAL>  "<name>"           {yybegin(name);}
+<name>       "</name>"          {yybegin(YYINITIAL);}
+
+<YYINITIAL>  "<use>"             {yybegin(use);}
+<use>        "</use>"            {yybegin(YYINITIAL);}
+
+<YYINITIAL>   "<bitSize>"        {yybegin(bitSize);}
+<bitSize>     "</bitSize>"        {yybegin(YYINITIAL);}
+
+<YYINITIAL>   "<insBitCode>"      {yybegin(insBitCode);}
+<insBitCode>  {bitMask}           {System.out.println("bitmask");}
+<insBitCode>  "</insBitCode>"     {yybegin(YYINITIAL);}
+
+<YYINITIAL>   {white}             {System.out.println("nada");}
+.                         {System.out.println("Error léxico en línea "+yyline);}
