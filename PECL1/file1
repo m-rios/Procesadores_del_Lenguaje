@@ -1,0 +1,22 @@
+<comment> Las etiquetas pueden aparecer en cualquier orden dado. También puede tener saltos de línea en un comentario.
+Como este!
+</comment>
+<comment> Fecha con valor incorrecto - pero recuerde, no es necesario comprobar
+          valores de fecha </comment>
+
+<date>20/30/2501</date>
+<comment> Otro nombre de microprocesador: </comment>
+<ident>A5Proc</ident>
+<comment> Varios registros - no hay duplicados en este archivo </comment>
+<name>'Ad'</name>
+    <name>'Mu'</name>
+        <name>'Di'</name>
+<comment> Nótese que no es necesario para comprobar que cada nombre es seguido de un <use> y <insBitCode>. El análisis sintáctico se hará cargo de ello, sólo estamos haciendo el análisis léxico. </comment>
+  <use>"StackPointer"</use>
+  <use>"ProgramPC"</use>
+  <insBitCode>0101</insBitCode>
+  <insBitCode>110xxy</insBitCode>
+  <insBitCode>110xxyzzzz</insBitCode>
+  <insBitCode>1011001xyyyz</insBitCode>
+  <insBitCode>1011001xyzzz</insBitCode>
+<comment> Lo siguiente debería causar 3 errores léxicos.</comment> <>>
