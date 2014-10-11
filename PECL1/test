@@ -1,1 +1,14 @@
-<ident>e</ident>
+<ident>x8086</ident>
+<date>20/20/2020</date>
+<ident>x</date>
+
+
+
+
+<comment>
+<name>'ah'</name>
+<name>'ah'</name>
+<name>'AX'</name>
+<use>"Accumulator"</use>
+<bitSize>10</bitSize>
+</comment>

@@ -1,0 +1,21 @@
+<comment> Nombre del Microprocesador:</comment>
+<ident>X80</ident>
+
+<comment> Fecha en que fue publicado:</comment>
+<date>15/05/2001</date>
+
+<comment> Registro AH es un registro de propósito general de 8 bits.</comment>
+<name>'AH'</name>
+<use>"AllPurpose"</use>
+<bitSize>8</bitSize>
+
+<comment> El Registro es un acumulador de 16 bits.</comment>
+<name>'A'</name>
+<use>"Accumulator"</use>
+<bitSize>16</bitSize>
+
+<comment> Máscara de código binario para la instrucción </comment>
+<insBitCode>00xxyyzz</insBitCode>
+
+<name>'A'</name>
+<comment> testing <jar>test</jar> <comment></comment</comment>

@@ -15,67 +15,68 @@ class updClass {
   private int numStackPointer;
   private int numBits;
   private Hashtable Regs = new Hashtable(); private int ErrorsScan;
-//setters
+  //setters
   public void setIdent(String s) {
-    Ident = s; }
-    public void setFecha(String s) {
-      Fecha = s;
-    }
- //getters
-    public int getNumErrorsScan() {
-      return ErrorsScan;
-    }
- //metodos add
-    public void incRegs() {
-      numRegs += 1;
-    }
-    public void incAllPurpose() {
-      numAllPurpose += 1;
-    }
-    public void incAccumulator() {
-      numAccumulator += 1;
-    }
-    public void incProgramPC() {
-      numProgramPC += 1;
-    }
-    public void incIndex() {
-      numIndex += 1;
-    }
-    public void incFlagVector() {
-      numFlagVector += 1;
-    }
-    public void incStackPointer() {
-      numStackPointer += 1;
-    }
-    public void incScanErrors() {
-     ErrorsScan += 1;
-   }
-   public void addBits(int n) {
-     numBits += n;
-   }
-   public Boolean putReg(String k, String v){
-     if (Regs.containsKey(k)) {
-       return false;
-     } else {
-      Regs.put(k,v);
-      return true;
-    }
+    Ident = s; 
   }
+  public void setFecha(String s) {
+    Fecha = s;
+  }
+  //getters
+  public int getNumErrorsScan() {
+    return ErrorsScan;
+  }
+  //metodos add
+  public void incRegs() {
+    numRegs += 1;
+  }
+  public void incAllPurpose() {
+    numAllPurpose += 1;
+  }
+  public void incAccumulator() {
+    numAccumulator += 1;
+  }
+  public void incProgramPC() {
+    numProgramPC += 1;
+  }
+  public void incIndex() {
+    numIndex += 1;
+  }
+  public void incFlagVector() {
+    numFlagVector += 1;
+  }
+  public void incStackPointer() {
+    numStackPointer += 1;
+  }
+  public void incScanErrors() {
+   ErrorsScan += 1;
+ }
+ public void addBits(int n) {
+   numBits += n;
+ }
+ public Boolean putReg(String k, String v){
+   if (Regs.containsKey(k)) {
+     return false;
+   } else {
+    Regs.put(k,v);
+    return true;
+  }
+}
 //toString
-  public String toString() {
-    return "Identidad del procesador .....: " + Ident +
-    "\n  Creado con fecha ...........: " + Fecha +
-    "\n  Capacidad de los Reg. (bits): " + numBits+
-    "\n  Numero de registros ........: " + numRegs +
-    "\n\tLista de Registros ...: " +
-    Regs.keySet().toString()+
-    "\n\tAllPurpose ...: " + numAllPurpose +
-    "\n\tAccumulators .: " + numAccumulator +
-    "\n\tProgram PCs ..: " + numProgramPC +
-    "\n\tIndex ........: " + numIndex +
-    "\n\tVector Flags .: " + numFlagVector +
-    "\n\tStack pointers: " + numStackPointer;
-  } 
+public String toString() {
+  return "Identidad del procesador .....: " + Ident +
+  "\n  Creado con fecha ...........: " + Fecha +
+  "\n  Capacidad de los Reg. (bits): " + numBits+
+  "\n  Numero de registros ........: " + numRegs +
+  "\n\tLista de Registros ...: " +
+  Regs.keySet().toString()+
+  "\n\tAllPurpose ...: " + numAllPurpose +
+  "\n\tAccumulators .: " + numAccumulator +
+  "\n\tProgram PCs ..: " + numProgramPC +
+  "\n\tIndex ........: " + numIndex +
+  "\n\tVector Flags .: " + numFlagVector +
+  "\n\tStack pointers: " + numStackPointer;
+} 
 }
 
 
@@ -91,6 +92,7 @@ class Yylex {
 	private final int YY_EOF = 65537;
 	public final int YYEOF = -1;
 
+    private updClass upd = new updClass();
     public static void main (String argv[]) throws java.io.IOException {
         Yylex yy;
         if (argv.length != 1) {   
@@ -142,23 +144,35 @@ class Yylex {
 	}
 
 	private boolean yy_eof_done = false;
-	private final int insBitCode = 6;
-	private final int bitSize = 5;
+	private void yy_do_eof () {
+		if (false == yy_eof_done) {
+
+System.out.println("------------------Report--------------------");
+System.out.println(upd.toString());
+		}
+		yy_eof_done = true;
+	}
 	private final int use = 4;
 	private final int name = 3;
 	private final int date = 2;
-	private final int YYINITIAL = 0;
+	private final int end = 8;
+	private final int insBitCode = 6;
 	private final int ident = 1;
 	private final int comment = 7;
+	private final int bitSize = 5;
+	private final int error = 9;
+	private final int YYINITIAL = 0;
 	private final int yy_state_dtrans[] = {
 		0,
-		58,
-		80,
-		150,
-		195,
-		199,
-		167,
-		179
+		73,
+		162,
+		182,
+		187,
+		138,
+		190,
+		147,
+		154,
+		192
 	};
 	private void yybegin (int state) {
 		yy_lexical_state = state;
@@ -331,34 +345,34 @@ class Yylex {
 		/* 19 */ YY_NO_ANCHOR,
 		/* 20 */ YY_NO_ANCHOR,
 		/* 21 */ YY_NO_ANCHOR,
-		/* 22 */ YY_NOT_ACCEPT,
+		/* 22 */ YY_NO_ANCHOR,
 		/* 23 */ YY_NO_ANCHOR,
 		/* 24 */ YY_NO_ANCHOR,
 		/* 25 */ YY_NO_ANCHOR,
-		/* 26 */ YY_NOT_ACCEPT,
+		/* 26 */ YY_NO_ANCHOR,
 		/* 27 */ YY_NO_ANCHOR,
 		/* 28 */ YY_NO_ANCHOR,
-		/* 29 */ YY_NOT_ACCEPT,
+		/* 29 */ YY_NO_ANCHOR,
 		/* 30 */ YY_NO_ANCHOR,
-		/* 31 */ YY_NOT_ACCEPT,
-		/* 32 */ YY_NO_ANCHOR,
-		/* 33 */ YY_NOT_ACCEPT,
-		/* 34 */ YY_NOT_ACCEPT,
-		/* 35 */ YY_NOT_ACCEPT,
-		/* 36 */ YY_NOT_ACCEPT,
-		/* 37 */ YY_NOT_ACCEPT,
-		/* 38 */ YY_NOT_ACCEPT,
-		/* 39 */ YY_NOT_ACCEPT,
+		/* 31 */ YY_NO_ANCHOR,
+		/* 32 */ YY_NOT_ACCEPT,
+		/* 33 */ YY_NO_ANCHOR,
+		/* 34 */ YY_NO_ANCHOR,
+		/* 35 */ YY_NO_ANCHOR,
+		/* 36 */ YY_NO_ANCHOR,
+		/* 37 */ YY_NO_ANCHOR,
+		/* 38 */ YY_NO_ANCHOR,
+		/* 39 */ YY_NO_ANCHOR,
 		/* 40 */ YY_NOT_ACCEPT,
-		/* 41 */ YY_NOT_ACCEPT,
+		/* 41 */ YY_NO_ANCHOR,
 		/* 42 */ YY_NOT_ACCEPT,
-		/* 43 */ YY_NOT_ACCEPT,
+		/* 43 */ YY_NO_ANCHOR,
 		/* 44 */ YY_NOT_ACCEPT,
-		/* 45 */ YY_NOT_ACCEPT,
+		/* 45 */ YY_NO_ANCHOR,
 		/* 46 */ YY_NOT_ACCEPT,
-		/* 47 */ YY_NOT_ACCEPT,
+		/* 47 */ YY_NO_ANCHOR,
 		/* 48 */ YY_NOT_ACCEPT,
-		/* 49 */ YY_NOT_ACCEPT,
+		/* 49 */ YY_NO_ANCHOR,
 		/* 50 */ YY_NOT_ACCEPT,
 		/* 51 */ YY_NOT_ACCEPT,
 		/* 52 */ YY_NOT_ACCEPT,
@@ -473,10 +487,10 @@ class Yylex {
 		/* 161 */ YY_NOT_ACCEPT,
 		/* 162 */ YY_NOT_ACCEPT,
 		/* 163 */ YY_NOT_ACCEPT,
-		/* 164 */ YY_NOT_ACCEPT,
+		/* 164 */ YY_NO_ANCHOR,
 		/* 165 */ YY_NOT_ACCEPT,
 		/* 166 */ YY_NOT_ACCEPT,
-		/* 167 */ YY_NOT_ACCEPT,
+		/* 167 */ YY_NO_ANCHOR,
 		/* 168 */ YY_NOT_ACCEPT,
 		/* 169 */ YY_NOT_ACCEPT,
 		/* 170 */ YY_NOT_ACCEPT,
@@ -492,12 +506,12 @@ class Yylex {
 		/* 180 */ YY_NOT_ACCEPT,
 		/* 181 */ YY_NOT_ACCEPT,
 		/* 182 */ YY_NOT_ACCEPT,
-		/* 183 */ YY_NOT_ACCEPT,
+		/* 183 */ YY_NO_ANCHOR,
 		/* 184 */ YY_NOT_ACCEPT,
 		/* 185 */ YY_NOT_ACCEPT,
 		/* 186 */ YY_NOT_ACCEPT,
 		/* 187 */ YY_NOT_ACCEPT,
-		/* 188 */ YY_NO_ANCHOR,
+		/* 188 */ YY_NOT_ACCEPT,
 		/* 189 */ YY_NOT_ACCEPT,
 		/* 190 */ YY_NOT_ACCEPT,
 		/* 191 */ YY_NOT_ACCEPT,
@@ -505,57 +519,57 @@ class Yylex {
 		/* 193 */ YY_NOT_ACCEPT,
 		/* 194 */ YY_NOT_ACCEPT,
 		/* 195 */ YY_NOT_ACCEPT,
-		/* 196 */ YY_NO_ANCHOR,
+		/* 196 */ YY_NOT_ACCEPT,
 		/* 197 */ YY_NOT_ACCEPT,
 		/* 198 */ YY_NOT_ACCEPT,
-		/* 199 */ YY_NOT_ACCEPT,
-		/* 200 */ YY_NO_ANCHOR,
-		/* 201 */ YY_NOT_ACCEPT,
-		/* 202 */ YY_NOT_ACCEPT,
-		/* 203 */ YY_NOT_ACCEPT
+		/* 199 */ YY_NOT_ACCEPT
 	};
 	private int yy_cmap[] = unpackFromString(1,65538,
-"9:9,27,28,9:2,28,9:18,27,9:14,10,24:2,9:10,1,9,8,9:3,22,23,9:15,20,9:13,15," +
-"19,2,12,5,9,16,9,11,9:2,13,4,6,3,9:2,14,18,7,17,9:2,25,26,21,9:65413,0:2")[0];
+"9:9,10,11,9:2,11,9:18,10,9,21,9:4,18,9:7,12,38:2,17:8,9:2,1,9,8,9:2,22,37,2" +
+"8,15:2,31,15:2,29,15:6,24,15:2,33,15:2,32,15:4,9:6,16,35,2,14,5,15,27,15,13" +
+",15,34,23,4,6,3,26,15,25,20,7,19,15:2,30,39,36,9:65413,0:2")[0];
 
-	private int yy_rmap[] = unpackFromString(1,204,
-"0,1,2,1:8,3,1:6,4,1,5,1,6,1,7,1,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22," +
-"23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47," +
-"48,49,50,51,52,53,54,55,56,57,58,59,48,60,61,62,63,64,65,66,67,68,69,70,71," +
-"72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96," +
-"97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,11" +
-"6,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,1" +
-"35,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153," +
-"154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172" +
-",173,174,175,176,177,178,179,180,181,182,183,184")[0];
+	private int yy_rmap[] = unpackFromString(1,200,
+"0,1,2,1:8,3,4,1:11,5,6,1,7,1,8,1,9,10,1,11,1,12,13,1:2,14,15,16,17,18,19,20" +
+",21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45" +
+",46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70" +
+",71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95" +
+",96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,11" +
+"5,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,2" +
+"3,9,134,135,136,137,138,11,139,140,141,142,143,144,145,146,147,148,149,150," +
+"151,11,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168," +
+"169")[0];
 
-	private int yy_nxt[][] = unpackFromString(185,29,
-"1,2,23:25,3:2,-1:31,22,-1:3,26,-1:4,29,186,-1:4,31,-1,33,-1:10,70,-1:51,18," +
-"24,-1:13,180,-1:21,34,-1:50,24,28,-1:17,189,-1:23,59,-1:2,60,-1:36,28,-1:3," +
-"24,28,-1:8,187,-1:5,35,-1:26,81,-1,82,-1:34,190,-1:20,151,-1:29,191,-1:21,1" +
-"97,-1:29,38,-1:30,39,-1:43,43,-1:12,44,-1:27,45,-1:31,4,-1:40,193,-1:16,5,-" +
-"1:31,194,-1:24,47,-1:29,6,-1:26,49,-1:30,7,-1:41,51,-1:14,52,-1:44,53,-1:10" +
-",54,-1:31,8,-1:23,55,-1:33,9,-1:32,56,-1:21,57,-1:31,10,-1:20,1,27,23:26,-1" +
-":12,61,-1:22,62,-1:35,63,-1:23,64,-1:26,65,-1:37,66,-1:20,67,-1:37,68,-1:20" +
-",69,-1:29,11,-1:28,12,-1:32,71,72,-1:26,73,-1:22,74,-1:39,75,-1:19,76,-1:32" +
-",77,-1:31,78,-1:21,79,-1:24,68,-1:25,1,30,23:26,-1:13,83,-1:27,84,-1:32,85," +
-"-1:29,86,-1:19,87,-1:32,88,-1:22,89,-1:30,90,-1:29,13,-1:23,91,-1:33,92,-1:" +
-"21,93,-1:39,94,-1:27,95,-1:33,96,-1:23,97,-1:24,98,-1:24,99,-1:33,100,-1:30" +
-",101,-1:19,102,-1:39,103,-1:27,104,-1:33,105,-1:23,106,-1:24,107,-1:24,108," +
-"-1:33,109,-1:21,110,-1:39,111,-1:27,112,-1:33,113,-1:23,114,-1:24,115,-1:24" +
-",116,-1:33,117,-1:30,118,-1:19,119,-1:39,120,-1:27,121,-1:33,122,-1:23,123," +
-"-1:24,124,-1:24,125,-1:33,126,-1:21,127,-1:39,128,-1:27,129,-1:33,130,-1:23" +
-",131,-1:24,132,-1:24,133,-1:33,134,-1:21,135,-1:39,136,-1:27,137,-1:33,138," +
-"-1:23,139,-1:24,140,-1:24,141,-1:33,142,-1:21,143,-1:39,144,-1:27,145,-1:33" +
-",146,-1:23,147,-1:24,148,-1:24,149,-1:33,14,-1:20,1,32,23:26,-1:7,152,-1:37" +
-",201,-1:18,154,-1:31,15,-1:37,156,-1:29,157,-1:15,158,-1:31,16,-1:39,160,-1" +
-":20,161,-1:24,162,-1:41,163,-1:19,164,-1:38,165,-1:12,166,-1:31,17,-1:20,1," +
-"200,23:22,18,23:3,-1:12,169,-1:23,170,-1:40,171,-1:32,172,-1:17,173,-1:24,1" +
-"74,-1:44,175,-1:8,176,-1:37,177,-1:21,178,-1:31,19,-1:20,1,20,25:26,-1:3,18" +
-"1,-1:29,202,-1:30,183,-1:29,184,-1:29,185,-1:29,21,-1:35,36,-1:31,37,-1:20," +
-"155,-1:22,198,-1:29,40,-1:30,41,-1:26,46,-1:34,48,-1:24,50,-1:21,1,188,23:2" +
-"6,-1:11,159,-1:22,192,-1:29,42,-1:23,1,196,23:26,-1:11,168,-1:22,153,-1:28," +
-"203,-1:28,182,-1:24");
+	private int yy_nxt[][] = unpackFromString(170,40,
+"1,2,33:8,3:2,33:28,-1:42,32,-1:3,40,-1:6,42,163,-1:4,44,-1:15,46,-1:16,74,-" +
+"1:29,12:8,-1:2,12:28,-1:17,24,-1:20,24,-1:31,25,-1:8,37,-1:12,148,-1:39,155" +
+",-1:28,161:7,31,161:2,-1,161:28,-1:3,48,-1:37,160,181:9,-1,181:28,-1:17,24," +
+"-1:12,25,-1:7,36,-1:31,25,-1:5,37,-1:2,37,-1:16,166,-1:40,80,-1:20,80,-1:7," +
+"165,-1:7,50,-1:37,84,-1:47,168,-1:21,85:6,-1:5,85:4,-1:2,85:2,-1,85:16,-1,8" +
+"5,-1:13,169,-1:48,91,-1,92,-1:4,93,-1,94,-1,95,-1:10,184,-1:36,160,181:9,-1" +
+",161,181:27,-1:5,53,-1:41,54,-1:69,58,-1:8,59,-1:38,60,-1:42,4,-1:64,171,-1" +
+":14,5,-1:44,172,-1:33,62,-1:40,6,-1:37,64,-1:41,7,-1:67,66,-1:10,67,-1:60,6" +
+"8,-1:16,69,-1:42,8,-1:34,70,-1:44,9,-1:45,71,-1:30,72,-1:42,10,-1:31,1,11,1" +
+"2:6,35:3,3,35,12:4,35:2,12:2,35,12:16,35,12,-1:13,75,-1:40,76,-1:30,77,-1:4" +
+"0,78,-1:40,79,-1:40,13,-1:43,81,-1:44,173,-1:20,173,-1:13,186,-1:44,14,-1:2" +
+"0,14,-1:7,86,-1:35,87:6,-1:5,87:4,-1:2,87:2,-1,87:16,-1,87,-1:16,188,-1:41," +
+"15,-1:26,89,-1:42,16,-1:50,96,-1:22,97,-1:20,174,-1:41,98,-1:20,99,-1:56,10" +
+"0,-1:23,175,-1:52,101,-1:21,102,-1:40,104,-1:50,176,-1:41,177,-1:28,106,-1:" +
+"53,191,-1:44,107,-1:42,108,-1:14,111,-1:45,17,-1:50,112,-1:45,196,-1:44,113" +
+",-1:41,114,-1:41,115,-1:30,117,-1:35,18,-1:23,118,-1:58,119,-1:38,120,-1:42" +
+",179,-1:15,122,-1:40,123,-1:52,199,-1:47,125,-1:22,126,-1:45,127,-1:46,128," +
+"-1:47,129,-1:14,130,-1:42,131,-1:38,132,-1:55,19,-1:43,133,-1:21,134,-1:53," +
+"20,-1:39,21,-1:23,136,-1:55,22,-1:43,137,-1:35,23,-1:18,1,183,33:8,3:2,33:5" +
+",24,33:20,36,33,-1:35,140,-1:17,141,-1:33,142,-1:65,143,-1:19,144,-1:62,145" +
+",-1:8,146,-1:42,26,-1:31,1,27,38:38,-1:2,149,-1:40,194,-1:41,151,-1:40,152," +
+"-1:40,153,-1:40,28,-1:31,1,29,39:9,3,39:28,-1:13,75,156,-1:41,157,-1:30,158" +
+",-1:37,159,-1:42,30,-1:31,1,33:9,3:2,33:5,41,33:20,41,33,-1:16,51,-1:35,90," +
+"-1:47,52,-1:23,185,-1:40,55,-1:41,56,-1:37,61,-1:47,63,-1:33,65,-1:49,82,-1" +
+":20,82,-1:24,103,-1:32,105,-1:28,109,-1:61,110,-1:31,116,-1:23,124,-1:61,13" +
+"5,-1:14,1,43,33:8,3:2,33:6,45,33:21,-1:12,139,-1:31,170,-1:40,57,-1:51,198," +
+"-1:20,198,-1,1,164,33:8,3:2,33:9,47,33:18,-1:4,88,-1:52,83,-1:20,83,-1,1,33" +
+":9,3:2,33:28,-1:4,178,-1:35,1,49,167:8,34,3,167:28,-1:4,121,-1:39,195,-1:39" +
+",150,-1:51,193,-1:26,180,-1:53,189,-1:20,189,-1:8,197,-1:32");
 
 	public int yylex ()
 		throws java.io.IOException {
@@ -579,6 +593,7 @@ class Yylex {
 			yy_next_state = YY_F;
 			yy_next_state = yy_nxt[yy_rmap[yy_state]][yy_cmap[yy_lookahead]];
 			if (YY_EOF == yy_lookahead && true == yy_initial) {
+				yy_do_eof();
 				return YYEOF;
 			}
 			if (YY_F != yy_next_state) {
@@ -606,11 +621,11 @@ class Yylex {
 					case -2:
 						break;
 					case 2:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
 					case -3:
 						break;
 					case 3:
-						{System.out.println("nada");}
+						{}
 					case -4:
 						break;
 					case 4:
@@ -638,15 +653,16 @@ class Yylex {
 					case -10:
 						break;
 					case 10:
-						{yybegin(insBitCode);}
+						{yybegin(bitSize);}
 					case -11:
 						break;
 					case 11:
-						{System.out.println("identificador");}
+						{System.out.println("error in line "+(int)(yyline+1)+": identifier expected");
+           yybegin(error);}
 					case -12:
 						break;
 					case 12:
-						{yybegin(YYINITIAL);}
+						{upd.setIdent(yytext());yybegin(end);}
 					case -13:
 						break;
 					case 13:
@@ -654,11 +670,15 @@ class Yylex {
 					case -14:
 						break;
 					case 14:
-						{/*add to class*/}
+						{upd.setFecha(yytext());yybegin(end);}
 					case -15:
 						break;
 					case 15:
-						{yybegin(YYINITIAL);}
+						{if(!upd.putReg(yytext(),"null")){
+                  System.out.println("WARNING: Registro repetido: "+yytext());
+              }else{
+                upd.incRegs();
+              }}
 					case -16:
 						break;
 					case 16:
@@ -670,60 +690,121 @@ class Yylex {
 					case -18:
 						break;
 					case 18:
-						{System.out.println("bitmask");}
+						{upd.incIndex();}
 					case -19:
 						break;
 					case 19:
-						{yybegin(YYINITIAL);}
+						{upd.incProgramPC();}
 					case -20:
 						break;
 					case 20:
-						{/*mientras comentario saltamos todo*/}
+						{upd.incAllPurpose();}
 					case -21:
 						break;
 					case 21:
-						{yybegin(YYINITIAL);}
+						{upd.incFlagVector();}
 					case -22:
 						break;
-					case 23:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 22:
+						{upd.incAccumulator();}
 					case -23:
 						break;
-					case 24:
-						{System.out.println("bitmask");}
+					case 23:
+						{upd.incStackPointer();}
 					case -24:
 						break;
-					case 25:
-						{/*mientras comentario saltamos todo*/}
+					case 24:
+						{upd.addBits(Integer.parseInt(yytext()));}
 					case -25:
 						break;
-					case 27:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 25:
+						{/*??*/}
 					case -26:
 						break;
-					case 28:
-						{System.out.println("bitmask");}
+					case 26:
+						{yybegin(YYINITIAL);}
 					case -27:
 						break;
-					case 30:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 27:
+						{}
 					case -28:
 						break;
-					case 32:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 28:
+						{yybegin(YYINITIAL);System.out.println("fin comentario "+(int)(yyline+1));}
 					case -29:
 						break;
-					case 188:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 29:
+						{System.out.println("End of tag expected at line: "+(int)(yyline+1)); yybegin(error);}
 					case -30:
 						break;
-					case 196:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 30:
+						{yybegin(YYINITIAL);}
 					case -31:
 						break;
-					case 200:
-						{System.out.println("Error l??xico en l??nea "+yyline);}
+					case 31:
+						{yybegin(YYINITIAL);}
 					case -32:
+						break;
+					case 33:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -33:
+						break;
+					case 34:
+						{}
+					case -34:
+						break;
+					case 35:
+						{System.out.println("error in line "+(int)(yyline+1)+": identifier expected");
+           yybegin(error);}
+					case -35:
+						break;
+					case 36:
+						{upd.addBits(Integer.parseInt(yytext()));}
+					case -36:
+						break;
+					case 37:
+						{/*??*/}
+					case -37:
+						break;
+					case 38:
+						{}
+					case -38:
+						break;
+					case 39:
+						{System.out.println("End of tag expected at line: "+(int)(yyline+1)); yybegin(error);}
+					case -39:
+						break;
+					case 41:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -40:
+						break;
+					case 43:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -41:
+						break;
+					case 45:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -42:
+						break;
+					case 47:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -43:
+						break;
+					case 49:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -44:
+						break;
+					case 164:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -45:
+						break;
+					case 167:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -46:
+						break;
+					case 183:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+					case -47:
 						break;
 					default:
 						yy_error(YY_E_INTERNAL,false);
