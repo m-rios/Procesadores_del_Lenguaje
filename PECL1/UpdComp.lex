@@ -104,8 +104,7 @@ public String toString() {
     } 
 
     public void printError(String msg){
-        System.out.println("error at line "+(int)(yyline+1)+
-          ": "+msg);
+        System.out.println("error en linea "+(int)(yyline+1)+": "+msg);
     }
 %}
 
@@ -117,7 +116,7 @@ System.out.println(upd.toString());
 white = [\r\t\n" "]
 letra = [a-zA-Z]
 dig = [0-9]
-ident = {letra}[^\r\t \n<]*
+ident = {letra}[^\r\t \n <]*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
 name = "'"{letra}{letra}"'"
 bitMask = [10]+(x+(yz*)*)*
@@ -126,20 +125,24 @@ bitMask = [10]+(x+(yz*)*)*
 %unicode
 %integer
 %line
-%state ident, date, name, use, bitSize, insBitCode, comment, endident, error
+%char
+%state ident, date, name, use, bitSize, insBitcode, comment, endident, error
 
 %%
 
 <YYINITIAL> "<comment>" { yybegin(comment);  }
-<comment> (.|[\n\r])*"</comment>" { yybegin(YYINITIAL); } 
+<comment> . {/*ignorar*/}
+<comment> "</comment>" { yybegin(YYINITIAL);  } 
 
 
 <YYINITIAL> "<ident>" { yybegin(ident);  }
 <ident> {ident} { campo = yytext();  } 
 <ident> "</ident>" {  upd.setIdent(campo);
+                      System.out.println("campo: "+campo);
                       campo=null;
                       yybegin(YYINITIAL);}
-<ident> . { printError("identificador no valido"); }
+<ident> . { printError("identificador no valido");
+            yybegin(error); }
 
 
 <YYINITIAL>"<date>" { yybegin(date);  }
@@ -147,7 +150,8 @@ bitMask = [10]+(x+(yz*)*)*
 <date>"</date>" { upd.setFecha(campo);
                   campo = null;
                   yybegin(YYINITIAL);}
-<date> . {  printError("fecha no válida");  }
+<date> . {  printError("fecha no válida");
+            yybegin(error);  }
 
 
 <YYINITIAL> "<name>" {yybegin(name);}
@@ -160,17 +164,21 @@ bitMask = [10]+(x+(yz*)*)*
                     campo = null;
                     yybegin(YYINITIAL);
                   }
-<name> "<use>" {yybegin(use);}
-<name> . {  printError("nombre no reconocido"); }
+<name> . {  printError("nombre no reconocido");
+            yybegin(error); }
 
 
+<YYINITIAL> "<use>" { yybegin(use); }
 <use> \u0022AllPurpose\u0022 {upd.incAllPurpose();}
 <use> \u0022Accumulator\u0022 {upd.incAccumulator();}
-<use> \u0022ProgramPC\u0022 {upd.incProgramPC();}
+<use> \u0022ProgramPc\u0022 {upd.incProgramPC();}
 <use> \u0022Index\u0022 {upd.incIndex();}
 <use> \u0022FlagVector\u0022 {upd.incFlagVector();}
 <use> \u0022StackPointer\u0022 {upd.incStackPointer();}
-"</use>" {yybegin(YYINITIAL);}
+<use> "</use>" {yybegin(YYINITIAL); }
+<use> . { printError("uso no reconocido");
+          yybegin(error); 
+        }
 
 
 <YYINITIAL> "<bitSize>" { yybegin(bitSize); }
@@ -179,13 +187,19 @@ bitMask = [10]+(x+(yz*)*)*
                             campo=null;
                             yybegin(YYINITIAL);
                           }
-<bitSize>   . {printError("tamaño de bits no reconocido");}                        
+<bitSize>   . { printError("tamaño de bits no reconocido");
+                yybegin(error);}                        
 
 
-<YYINITIAL>   "<insBitCode>" {yybegin(bitSize);}
-<insBitCode>  {bitMask} {/*??*/}
-<insBitCode>  "</bitSize>" {yybegin(YYINITIAL);}
-<insBitCode> .  {printError("Mascara de bits no reconocida");}
+<YYINITIAL>   "<insBitcode>" {yybegin(insBitcode);}
+<insBitcode>  {bitMask} {/*??*/}
+<insBitcode>  "</insBitcode>" {yybegin(YYINITIAL);}
+<insBitcode> .  { printError("Mascara de bits no reconocida");
+                  yybegin(error);}
+
+<error> "</"{letra}*">"  {  yybegin(YYINITIAL);
+                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));  }
+<error> .|[\n\r] {/*ignorar*/}
 
 
 {white} {}
