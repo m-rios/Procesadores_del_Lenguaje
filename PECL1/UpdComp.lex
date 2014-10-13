@@ -87,6 +87,7 @@ public String toString() {
 %{
 
     private updClass upd = new updClass();
+    private String campo;
 
     public static void main (String argv[]) throws java.io.IOException {
         Yylex yy;
@@ -101,6 +102,11 @@ public String toString() {
         }
         while (yy.yylex() != -1) ;
     } 
+
+    public void printError(String msg){
+        System.out.println("error at line "+(int)(yyline+1)+
+          ": "+msg);
+    }
 %}
 
 %eof{
@@ -120,51 +126,67 @@ bitMask = [10]+(x+(yz*)*)*
 %unicode
 %integer
 %line
-%state ident, date, name, use, bitSize, insBitCode, comment, end, error
+%state ident, date, name, use, bitSize, insBitCode, comment, endident, error
 
 %%
 
-<YYINITIAL> "<comment>" {yybegin(comment);}
-<comment> (.|{white}) {}
-<comment> "</comment>" {yybegin(YYINITIAL);System.out.println("fin comentario "+(int)(yyline+1));} 
+<YYINITIAL> "<comment>" { yybegin(comment);  }
+<comment> (.|[\n\r])*"</comment>" { yybegin(YYINITIAL); } 
 
-<YYINITIAL> "<ident>" {yybegin(ident);}
-<ident,end> "</ident>" {yybegin(YYINITIAL);}
-<ident> {ident} {upd.setIdent(yytext());yybegin(end);}
-<ident> . {System.out.println("error in line "+(int)(yyline+1)+": identifier expected");
-           yybegin(error);}
 
-<YYINITIAL> "<date>" {yybegin(date);}
-<date> {date} {upd.setFecha(yytext());yybegin(end);}
-<end> "</date>" {yybegin(YYINITIAL);}
+<YYINITIAL> "<ident>" { yybegin(ident);  }
+<ident> {ident} { campo = yytext();  } 
+<ident> "</ident>" {  upd.setIdent(campo);
+                      campo=null;
+                      yybegin(YYINITIAL);}
+<ident> . { printError("identificador no valido"); }
+
+
+<YYINITIAL>"<date>" { yybegin(date);  }
+<date>{date} {  campo = yytext(); }
+<date>"</date>" { upd.setFecha(campo);
+                  campo = null;
+                  yybegin(YYINITIAL);}
+<date> . {  printError("fecha no válida");  }
+
 
 <YYINITIAL> "<name>" {yybegin(name);}
-<name> {name} {if(!upd.putReg(yytext(),"null")){
-                  System.out.println("WARNING: Registro repetido: "+yytext());
-              }else{
-                upd.incRegs();
-              }}
-<name> "</name>" {yybegin(YYINITIAL);}
+<name> {name} { campo = yytext(); }
+<name> "</name>" {  if(!upd.putReg(campo,"null")){
+                    System.out.println("WARNING: Registro repetido: "+campo);
+                    }else{
+                    upd.incRegs();
+                    }
+                    campo = null;
+                    yybegin(YYINITIAL);
+                  }
+<name> "<use>" {yybegin(use);}
+<name> . {  printError("nombre no reconocido"); }
 
-<YYINITIAL> "<use>" {yybegin(use);}
+
 <use> \u0022AllPurpose\u0022 {upd.incAllPurpose();}
 <use> \u0022Accumulator\u0022 {upd.incAccumulator();}
 <use> \u0022ProgramPC\u0022 {upd.incProgramPC();}
 <use> \u0022Index\u0022 {upd.incIndex();}
 <use> \u0022FlagVector\u0022 {upd.incFlagVector();}
 <use> \u0022StackPointer\u0022 {upd.incStackPointer();}
-<use> "</use>" {yybegin(YYINITIAL);}
+"</use>" {yybegin(YYINITIAL);}
 
-<YYINITIAL> "<bitSize>" {yybegin(bitSize);}
-<bitSize> {dig}+ {upd.addBits(Integer.parseInt(yytext()));}
-<bitSize> "</bitSize>" {yybegin(YYINITIAL);}
 
-<YYINITIAL> "<insBitCode>" {yybegin(bitSize);}
-<bitSize> {bitMask} {/*??*/}
-<bitSize> "</bitSize>" {yybegin(YYINITIAL);}
+<YYINITIAL> "<bitSize>" { yybegin(bitSize); }
+<bitSize>   {dig}+ {  campo=yytext(); }
+<bitSize>   "</bitSize>"  { upd.addBits(Integer.parseInt(campo));
+                            campo=null;
+                            yybegin(YYINITIAL);
+                          }
+<bitSize>   . {printError("tamaño de bits no reconocido");}                        
 
-<error> (.|[^\n\r])*"</".*">" {yybegin(YYINITIAL);}
-<end> ([^\n\r]) {System.out.println("End of tag expected at line: "+(int)(yyline+1)); yybegin(error);}
+
+<YYINITIAL>   "<insBitCode>" {yybegin(bitSize);}
+<insBitCode>  {bitMask} {/*??*/}
+<insBitCode>  "</bitSize>" {yybegin(YYINITIAL);}
+<insBitCode> .  {printError("Mascara de bits no reconocida");}
+
 
 {white} {}
 . {System.out.println("unknown error at line: "+(int)(yyline+1));}
