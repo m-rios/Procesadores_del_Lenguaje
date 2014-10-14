@@ -158,10 +158,10 @@ System.out.println(upd.toString());
 		}
 		yy_eof_done = true;
 	}
-	private final int insBitcode = 6;
 	private final int use = 4;
 	private final int name = 3;
 	private final int date = 2;
+	private final int insBitCode = 6;
 	private final int ident = 1;
 	private final int comment = 7;
 	private final int bitSize = 5;
@@ -170,15 +170,15 @@ System.out.println(upd.toString());
 	private final int YYINITIAL = 0;
 	private final int yy_state_dtrans[] = {
 		0,
-		81,
-		88,
-		98,
-		105,
-		154,
+		80,
+		87,
+		97,
+		104,
+		142,
+		151,
 		163,
-		175,
-		184,
-		182
+		172,
+		170
 	};
 	private void yybegin (int state) {
 		yy_lexical_state = state;
@@ -364,30 +364,30 @@ System.out.println(upd.toString());
 		/* 30 */ YY_NO_ANCHOR,
 		/* 31 */ YY_NO_ANCHOR,
 		/* 32 */ YY_NO_ANCHOR,
-		/* 33 */ YY_NO_ANCHOR,
+		/* 33 */ YY_NOT_ACCEPT,
 		/* 34 */ YY_NO_ANCHOR,
 		/* 35 */ YY_NO_ANCHOR,
 		/* 36 */ YY_NO_ANCHOR,
 		/* 37 */ YY_NO_ANCHOR,
-		/* 38 */ YY_NOT_ACCEPT,
+		/* 38 */ YY_NO_ANCHOR,
 		/* 39 */ YY_NO_ANCHOR,
 		/* 40 */ YY_NO_ANCHOR,
 		/* 41 */ YY_NO_ANCHOR,
 		/* 42 */ YY_NO_ANCHOR,
 		/* 43 */ YY_NO_ANCHOR,
-		/* 44 */ YY_NO_ANCHOR,
+		/* 44 */ YY_NOT_ACCEPT,
 		/* 45 */ YY_NO_ANCHOR,
 		/* 46 */ YY_NO_ANCHOR,
 		/* 47 */ YY_NO_ANCHOR,
 		/* 48 */ YY_NO_ANCHOR,
 		/* 49 */ YY_NOT_ACCEPT,
 		/* 50 */ YY_NO_ANCHOR,
-		/* 51 */ YY_NO_ANCHOR,
+		/* 51 */ YY_NOT_ACCEPT,
 		/* 52 */ YY_NO_ANCHOR,
-		/* 53 */ YY_NO_ANCHOR,
-		/* 54 */ YY_NOT_ACCEPT,
+		/* 53 */ YY_NOT_ACCEPT,
+		/* 54 */ YY_NO_ANCHOR,
 		/* 55 */ YY_NOT_ACCEPT,
-		/* 56 */ YY_NOT_ACCEPT,
+		/* 56 */ YY_NO_ANCHOR,
 		/* 57 */ YY_NOT_ACCEPT,
 		/* 58 */ YY_NOT_ACCEPT,
 		/* 59 */ YY_NOT_ACCEPT,
@@ -528,31 +528,15 @@ System.out.println(upd.toString());
 		/* 194 */ YY_NOT_ACCEPT,
 		/* 195 */ YY_NOT_ACCEPT,
 		/* 196 */ YY_NOT_ACCEPT,
-		/* 197 */ YY_NOT_ACCEPT,
-		/* 198 */ YY_NOT_ACCEPT,
-		/* 199 */ YY_NOT_ACCEPT,
-		/* 200 */ YY_NOT_ACCEPT,
-		/* 201 */ YY_NOT_ACCEPT,
-		/* 202 */ YY_NOT_ACCEPT,
-		/* 203 */ YY_NOT_ACCEPT,
-		/* 204 */ YY_NOT_ACCEPT,
-		/* 205 */ YY_NOT_ACCEPT,
-		/* 206 */ YY_NOT_ACCEPT,
-		/* 207 */ YY_NOT_ACCEPT,
-		/* 208 */ YY_NOT_ACCEPT,
-		/* 209 */ YY_NOT_ACCEPT,
-		/* 210 */ YY_NOT_ACCEPT,
-		/* 211 */ YY_NOT_ACCEPT,
-		/* 212 */ YY_NOT_ACCEPT,
-		/* 213 */ YY_NOT_ACCEPT
+		/* 197 */ YY_NOT_ACCEPT
 	};
 	private int yy_cmap[] = unpackFromString(1,65538,
-"14:9,9,38,14:2,38,14:18,9,14,20,14:4,17,14:7,10,36:2,16:8,14:2,1,14,8,14:2," +
-"21,35,13:3,29,13:2,27,13:6,23,13:2,31,13:2,30,13:4,14:6,15,33,2,12,5,13,26," +
-"13,11,13,32,22,4,6,3,25,13,24,19,7,18,13:2,28,37,34,14:65413,0:2")[0];
+"9:9,38,37,9:2,37,9:18,38,9:6,16,9:7,10,35:2,14:8,9:2,1,9,8,9:2,19,33,34,13:" +
+"2,27,13:2,25,13:6,21,13:2,29,13:2,28,13:4,9:6,15,31,2,12,5,13,24,13,11,13,3" +
+"0,20,4,6,3,23,13,22,18,7,17,13:2,26,36,32,9:65413,0:2")[0];
 
-	private int yy_rmap[] = unpackFromString(1,214,
-"0,1,2,1:8,3,4,1,5,1:2,6,1:2,7,1:7,8,9,1,10,11,1,12,1,13,1,14,1:7,15,1:2,16," +
+	private int yy_rmap[] = unpackFromString(1,198,
+"0,1,2,1:8,3,4,1,5,1:2,6,1:2,7,1:2,8,9,1,10,11,1,12,1,13,1,14,1:7,15,1:2,16," +
 "17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41," +
 "42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66," +
 "67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91," +
@@ -560,40 +544,38 @@ System.out.println(upd.toString());
 ",113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,13" +
 "1,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,1" +
 "50,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168," +
-"169,170,171,172,173,174,175,176,177,178,179,180")[0];
+"169")[0];
 
-	private int yy_nxt[][] = unpackFromString(181,39,
-"1,2,39:7,3,39:28,3,-1:41,38,-1:3,49,-1:4,54,185,-1:5,55,-1:14,56,-1:15,82,-" +
-"1:30,12:7,-1,12:28,-1:11,89,-1:38,99,-1:38,106,-1:38,155,-1:44,29,-1:19,29," +
-"-1:12,164,-1:56,46,-1:7,32,-1:12,176,-1:38,183,-1:31,57,-1:63,46,-1:8,53,-1" +
-":16,187,-1:39,90,-1:19,90,-1:4,100:6,-1:3,100:3,-1,100,-1:2,100:2,-1,100:15" +
-",-1,100,-1:22,107,-1,108,-1:3,109,-1,110,-1,111,-1:35,46,-1:5,53,-1:2,53,-1" +
-":7,186,-1:5,58,-1:45,188,-1:30,189,-1:31,201,-1:39,61,-1:40,62,-1:66,66,-1:" +
-"9,67,-1:37,68,-1:41,4,-1:61,191,-1:15,5,-1:41,192,-1:34,70,-1:39,6,-1:36,72" +
-",-1:40,7,-1:64,74,-1:11,75,-1:33,76,-1:41,77,-1:41,8,-1:33,78,-1:43,9,-1:42" +
-",79,-1:31,80,-1:41,10,-1:30,1,11,12:6,40:3,12:3,40,12,40:2,12:2,40,12:15,40" +
-",12,3,-1:11,83,-1:39,84,-1:31,85,-1:39,86,-1:39,87,-1:39,13,-1:30,1,14,41:1" +
-"4,50,41:19,50,41,3,-1:12,91,-1:36,92,-1:43,93,-1:39,193,-1:19,193,-1:9,94,-" +
-"1:36,96,-1:43,203,-1:36,15,-1:46,16,-1:19,16,-1:2,1,17,42:15,51,42:20,3,-1:" +
-"6,101,-1:34,102:6,-1:3,102:3,-1,102,-1:2,102:2,-1,102:15,-1,102,-1:16,204,-" +
-"1:40,18,-1:26,104,-1:41,19,-1:30,1,20,43:18,52,43:17,3,-1:18,112,-1:22,113," +
-"-1:19,194,-1:40,114,-1:20,115,-1:54,116,-1:23,195,-1:50,117,-1:21,118,-1:39" +
-",120,-1:47,196,-1:41,197,-1:28,122,-1:51,206,-1:43,123,-1:41,124,-1:14,127," +
-"-1:44,21,-1:48,128,-1:44,210,-1:42,129,-1:40,130,-1:40,131,-1:30,133,-1:34," +
-"22,-1:23,134,-1:56,135,-1:37,136,-1:41,199,-1:15,138,-1:39,139,-1:50,213,-1" +
-":46,141,-1:22,142,-1:42,143,-1:46,144,-1:21,145,-1:39,146,-1:41,147,-1:37,1" +
-"48,-1:53,23,-1:42,149,-1:21,150,-1:51,24,-1:38,25,-1:23,152,-1:53,26,-1:42," +
-"153,-1:34,27,-1:18,1,28,44:14,29,44:19,29,44,3,-1:33,156,-1:16,157,-1:34,15" +
-"8,-1:62,159,-1:18,160,-1:61,161,-1:9,162,-1:41,30,-1:30,1,31,45:34,32,45,3," +
-"-1:11,165,-1:33,166,-1:51,167,-1:54,168,-1:14,169,-1:34,170,-1:33,171,-1:39" +
-",172,-1:47,173,-1:31,174,-1:41,33,-1:30,1,34,47:36,3,-1:2,177,-1:39,208,-1:" +
-"40,179,-1:39,180,-1:39,181,-1:39,35,-1:30,1,36,48:37,-1:2,183:6,37,-1:2,183" +
-":3,-1,183,-1:2,183:2,-1,183:15,-1,183,-1,1,39:8,3,39:28,3,-1:15,59,-1:42,60" +
-",-1:23,202,-1:39,63,-1:40,64,-1:36,69,-1:44,71,-1:34,73,-1:47,95,-1:19,95,-" +
-"1:24,119,-1:31,121,-1:28,125,-1:59,126,-1:30,132,-1:23,140,-1:59,151,-1:18," +
-"190,-1:39,65,-1:49,212,-1:19,212,-1:6,103,-1:50,97,-1:19,97,-1:6,198,-1:38," +
-"137,-1:38,209,-1:38,178,-1:49,207,-1:26,200,-1:51,205,-1:19,205,-1:9,211,-1" +
-":31");
+	private int yy_nxt[][] = unpackFromString(170,39,
+"1,2,34:35,3:2,-1:41,33,-1:3,44,-1:4,49,173,-1:4,51,-1:13,53,-1:17,81,-1:30," +
+"12:6,-1:3,12:5,-1,12:20,-1:12,88,-1:38,98,-1:38,105,-1:38,143,-1:42,24,-1:2" +
+"0,24,-1:13,152,-1:54,41,-1:8,27,-1:13,164,-1:38,171,-1:31,55,-1:61,41,-1:9," +
+"48,-1:17,175,-1:37,89,-1:20,89,-1:5,99:6,-1:3,99:3,-1,99,-1,99:18,-1,99,-1:" +
+"4,106,-1:17,107,-1:44,41,-1:5,48,-1:3,48,-1:8,174,-1:5,57,-1:48,108,-1:34,1" +
+"76,-1:26,109,-1:43,177,-1:47,110,-1:22,187,-1:41,182,-1:36,60,-1:40,61,-1:6" +
+"4,65,-1:11,66,-1:37,67,-1:41,4,-1:59,179,-1:17,5,-1:41,180,-1:34,69,-1:39,6" +
+",-1:36,71,-1:40,7,-1:62,73,-1:13,74,-1:65,75,-1:9,76,-1:41,8,-1:33,77,-1:43" +
+",9,-1:42,78,-1:31,79,-1:41,10,-1:30,1,11,12:6,35:3,12:3,35,12,35,12:18,35,1" +
+"2,3,35,-1:11,82,-1:39,83,-1:31,84,-1:39,85,-1:39,86,-1:39,13,-1:30,1,14,36:" +
+"12,45,36:20,45,36,3,36,-1:12,90,-1:36,91,-1:43,92,-1:37,181,-1:20,181,-1:10" +
+",93,-1:36,95,-1:43,189,-1:36,15,-1:44,16,-1:20,16,-1:3,1,17,37:14,46,37:20," +
+"3,37,-1:6,100,-1:34,101:6,-1:3,101:3,-1,101,-1,101:18,-1,101,-1:17,190,-1:3" +
+"9,18,-1:27,103,-1:41,19,-1:30,1,20,38:17,47,38,50,38:3,52,38,54,38,56,38:7," +
+"3,38,-1:17,111,-1:23,112,-1:56,113,-1:21,114,-1:47,115,-1:41,183,-1:41,184," +
+"-1:37,192,-1:42,117,-1:41,118,-1:19,119,-1:35,121,-1:53,123,-1:43,196,-1:42" +
+",21,-1:40,124,-1:40,125,-1:16,22,-1:52,127,-1:21,128,-1:54,129,-1:37,130,-1" +
+":41,186,-1:17,132,-1:39,133,-1:50,132,-1:44,135,-1:24,136,-1:42,137,-1:45,1" +
+"38,-1:22,21,-1:39,139,-1:41,140,-1:37,21,-1:55,21,-1:23,141,-1:36,139,-1:33" +
+",1,23,39:12,24,39:20,24,39,3,39,-1:31,144,-1:18,145,-1:34,146,-1:60,147,-1:" +
+"20,148,-1:59,149,-1:11,150,-1:41,25,-1:30,1,26,40:33,27,40,3,40,-1:11,153,-" +
+"1:33,154,-1:50,155,-1:53,156,-1:16,157,-1:34,158,-1:65,159,-1:7,160,-1:47,1" +
+"61,-1:31,162,-1:41,28,-1:30,1,29,42:35,3,42,-1:2,165,-1:39,194,-1:40,167,-1" +
+":39,168,-1:39,169,-1:39,30,-1:30,1,31,43:37,-1:2,171:6,32,-1:2,171:3,-1,171" +
+",-1,171:18,-1,171,-1:2,1,34:36,3:2,-1:15,58,-1:41,59,-1:24,188,-1:39,62,-1:" +
+"40,63,-1:36,68,-1:44,70,-1:34,72,-1:45,94,-1:20,94,-1:18,116,-1:47,120,-1:1" +
+"9,122,-1:50,126,-1:24,134,-1:39,178,-1:39,64,-1:47,197,-1:20,197,-1:7,102,-" +
+"1:48,96,-1:20,96,-1:7,185,-1:38,131,-1:38,195,-1:38,166,-1:49,193,-1:37,191" +
+",-1:20,191,-1:3");
 
 	public int yylex ()
 		throws java.io.IOException {
@@ -677,11 +659,12 @@ System.out.println(upd.toString());
 					case -10:
 						break;
 					case 10:
-						{yybegin(insBitcode);}
+						{yybegin(insBitCode);}
 					case -11:
 						break;
 					case 11:
 						{ printError("identificador no valido");
+            upd.incScanErrors();
             yybegin(error); }
 					case -12:
 						break;
@@ -697,7 +680,8 @@ System.out.println(upd.toString());
 					case -14:
 						break;
 					case 14:
-						{  printError("fecha no v??lida");
+						{  printError("fecha no valida");
+            upd.incScanErrors();
             yybegin(error);  }
 					case -15:
 						break;
@@ -713,6 +697,7 @@ System.out.println(upd.toString());
 						break;
 					case 17:
 						{  printError("nombre no reconocido");
+            upd.incScanErrors();
             yybegin(error); }
 					case -18:
 						break;
@@ -721,7 +706,7 @@ System.out.println(upd.toString());
 					case -19:
 						break;
 					case 19:
-						{  if(!upd.putReg(campo,"null")){
+						{  if(!upd.putReg(campo,campo)){
                     System.out.println("WARNING: Registro repetido: "+campo);
                     }else{
                     upd.incRegs();
@@ -733,150 +718,187 @@ System.out.println(upd.toString());
 						break;
 					case 20:
 						{ printError("uso no reconocido");
+          upd.incScanErrors();
           yybegin(error); 
         }
 					case -21:
 						break;
 					case 21:
-						{yybegin(YYINITIAL); }
+						{ campo = yytext(); }
 					case -22:
 						break;
 					case 22:
-						{upd.incIndex();}
+						{ if (campo.equals("\"AllPurpose\"")) {                    
+                    upd.incAllPurpose();
+                  }else if (campo.equals("\"Accumulator\"")) {
+                    upd.incAccumulator();
+                  }else if (campo.equals("\"ProgramPc\"")) {
+                    upd.incProgramPC();
+                  }else if (campo.equals("\"Index\"")) {
+                    upd.incIndex();
+                  }else if (campo.equals("\"FlagVector\"")) {
+                    upd.incFlagVector();
+                  }else if (campo.equals("\"StackPointer\"")) {
+                    upd.incStackPointer();
+                  }else{
+                    yybegin(error);
+                  }
+                  yybegin(YYINITIAL);                   
+                }
 					case -23:
 						break;
 					case 23:
-						{upd.incProgramPC();}
+						{ printError("tama??o de bits no reconocido");
+                upd.incScanErrors();
+                yybegin(error);}
 					case -24:
 						break;
 					case 24:
-						{upd.incAllPurpose();}
+						{  campo=yytext(); }
 					case -25:
 						break;
 					case 25:
-						{upd.incFlagVector();}
-					case -26:
-						break;
-					case 26:
-						{upd.incAccumulator();}
-					case -27:
-						break;
-					case 27:
-						{upd.incStackPointer();}
-					case -28:
-						break;
-					case 28:
-						{ printError("tama??o de bits no reconocido");
-                yybegin(error);}
-					case -29:
-						break;
-					case 29:
-						{  campo=yytext(); }
-					case -30:
-						break;
-					case 30:
 						{ upd.addBits(Integer.parseInt(campo));
                             campo=null;
                             yybegin(YYINITIAL);
                           }
+					case -26:
+						break;
+					case 26:
+						{ printError("Mascara de bits no reconocida");
+                  upd.incScanErrors();
+                  yybegin(error);}
+					case -27:
+						break;
+					case 27:
+						{/*??*/}
+					case -28:
+						break;
+					case 28:
+						{yybegin(YYINITIAL);}
+					case -29:
+						break;
+					case 29:
+						{/*ignorar*/}
+					case -30:
+						break;
+					case 30:
+						{ yybegin(YYINITIAL);  }
 					case -31:
 						break;
 					case 31:
-						{ printError("Mascara de bits no reconocida");
-                  yybegin(error);}
+						{/*ignorar*/}
 					case -32:
 						break;
 					case 32:
-						{/*??*/}
+						{  yybegin(YYINITIAL);
+                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));
+                            System.out.println("------------------------------");  }
 					case -33:
 						break;
-					case 33:
-						{yybegin(YYINITIAL);}
+					case 34:
+						{System.out.println("unknown error at line: "+(int)(yyline+1));}
 					case -34:
 						break;
-					case 34:
-						{/*ignorar*/}
+					case 35:
+						{ printError("identificador no valido");
+            upd.incScanErrors();
+            yybegin(error); }
 					case -35:
 						break;
-					case 35:
-						{ yybegin(YYINITIAL);  }
+					case 36:
+						{  printError("fecha no valida");
+            upd.incScanErrors();
+            yybegin(error);  }
 					case -36:
 						break;
-					case 36:
-						{/*ignorar*/}
+					case 37:
+						{  printError("nombre no reconocido");
+            upd.incScanErrors();
+            yybegin(error); }
 					case -37:
 						break;
-					case 37:
-						{  yybegin(YYINITIAL);
-                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));  }
+					case 38:
+						{ printError("uso no reconocido");
+          upd.incScanErrors();
+          yybegin(error); 
+        }
 					case -38:
 						break;
 					case 39:
-						{System.out.println("unknown error at line: "+(int)(yyline+1));}
+						{ printError("tama??o de bits no reconocido");
+                upd.incScanErrors();
+                yybegin(error);}
 					case -39:
 						break;
 					case 40:
-						{ printError("identificador no valido");
-            yybegin(error); }
+						{ printError("Mascara de bits no reconocida");
+                  upd.incScanErrors();
+                  yybegin(error);}
 					case -40:
 						break;
 					case 41:
-						{  printError("fecha no v??lida");
-            yybegin(error);  }
+						{/*??*/}
 					case -41:
 						break;
 					case 42:
-						{  printError("nombre no reconocido");
-            yybegin(error); }
+						{/*ignorar*/}
 					case -42:
 						break;
 					case 43:
-						{ printError("uso no reconocido");
-          yybegin(error); 
-        }
+						{/*ignorar*/}
 					case -43:
 						break;
-					case 44:
-						{ printError("tama??o de bits no reconocido");
-                yybegin(error);}
+					case 45:
+						{  printError("fecha no valida");
+            upd.incScanErrors();
+            yybegin(error);  }
 					case -44:
 						break;
-					case 45:
-						{ printError("Mascara de bits no reconocida");
-                  yybegin(error);}
+					case 46:
+						{  printError("nombre no reconocido");
+            upd.incScanErrors();
+            yybegin(error); }
 					case -45:
 						break;
-					case 46:
-						{/*??*/}
+					case 47:
+						{ printError("uso no reconocido");
+          upd.incScanErrors();
+          yybegin(error); 
+        }
 					case -46:
 						break;
-					case 47:
-						{/*ignorar*/}
+					case 48:
+						{/*??*/}
 					case -47:
 						break;
-					case 48:
-						{/*ignorar*/}
-					case -48:
-						break;
 					case 50:
-						{  printError("fecha no v??lida");
-            yybegin(error);  }
-					case -49:
-						break;
-					case 51:
-						{  printError("nombre no reconocido");
-            yybegin(error); }
-					case -50:
+						{ printError("uso no reconocido");
+          upd.incScanErrors();
+          yybegin(error); 
+        }
+					case -48:
 						break;
 					case 52:
 						{ printError("uso no reconocido");
+          upd.incScanErrors();
+          yybegin(error); 
+        }
+					case -49:
+						break;
+					case 54:
+						{ printError("uso no reconocido");
+          upd.incScanErrors();
+          yybegin(error); 
+        }
+					case -50:
+						break;
+					case 56:
+						{ printError("uso no reconocido");
+          upd.incScanErrors();
           yybegin(error); 
         }
 					case -51:
-						break;
-					case 53:
-						{/*??*/}
-					case -52:
 						break;
 					default:
 						yy_error(YY_E_INTERNAL,false);

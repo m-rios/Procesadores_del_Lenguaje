@@ -1,3 +1,4 @@
+<comment>
 <ident>ident polla</ident>
 
 <date>20/20/2020</date>
@@ -9,3 +10,5 @@
 <use>"Accumulator"</use>
 <bitSize>10</bitSize>
 </comment>
+
+<insBitCode>10xxyyzz</insBitCode>

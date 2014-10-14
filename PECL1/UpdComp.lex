@@ -116,17 +116,18 @@ System.out.println(upd.toString());
 white = [\r\t\n" "]
 letra = [a-zA-Z]
 dig = [0-9]
-ident = {letra}[^\r\t \n <]*
+ident = {letra}({letra}|{dig})*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
 name = "'"{letra}{letra}"'"
-bitMask = [10]+(x+(yz*)*)*
+bitMask = [0-1]+(x+(yz*)*)*
+use = ("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer")
 
 
 %unicode
 %integer
 %line
 %char
-%state ident, date, name, use, bitSize, insBitcode, comment, endident, error
+%state ident, date, name, use, bitSize, insBitCode, comment, endident, error
 
 %%
 
@@ -142,6 +143,7 @@ bitMask = [10]+(x+(yz*)*)*
                       campo=null;
                       yybegin(YYINITIAL);}
 <ident> . { printError("identificador no valido");
+            upd.incScanErrors();
             yybegin(error); }
 
 
@@ -150,13 +152,14 @@ bitMask = [10]+(x+(yz*)*)*
 <date>"</date>" { upd.setFecha(campo);
                   campo = null;
                   yybegin(YYINITIAL);}
-<date> . {  printError("fecha no válida");
+<date> . {  printError("fecha no valida");
+            upd.incScanErrors();
             yybegin(error);  }
 
 
 <YYINITIAL> "<name>" {yybegin(name);}
 <name> {name} { campo = yytext(); }
-<name> "</name>" {  if(!upd.putReg(campo,"null")){
+<name> "</name>" {  if(!upd.putReg(campo,campo)){
                     System.out.println("WARNING: Registro repetido: "+campo);
                     }else{
                     upd.incRegs();
@@ -165,18 +168,31 @@ bitMask = [10]+(x+(yz*)*)*
                     yybegin(YYINITIAL);
                   }
 <name> . {  printError("nombre no reconocido");
+            upd.incScanErrors();
             yybegin(error); }
 
 
 <YYINITIAL> "<use>" { yybegin(use); }
-<use> \u0022AllPurpose\u0022 {upd.incAllPurpose();}
-<use> \u0022Accumulator\u0022 {upd.incAccumulator();}
-<use> \u0022ProgramPc\u0022 {upd.incProgramPC();}
-<use> \u0022Index\u0022 {upd.incIndex();}
-<use> \u0022FlagVector\u0022 {upd.incFlagVector();}
-<use> \u0022StackPointer\u0022 {upd.incStackPointer();}
-<use> "</use>" {yybegin(YYINITIAL); }
+<use> {use} { campo = yytext(); }
+<use> "</use>"  { if (campo.equals("\"AllPurpose\"")) {                    
+                    upd.incAllPurpose();
+                  }else if (campo.equals("\"Accumulator\"")) {
+                    upd.incAccumulator();
+                  }else if (campo.equals("\"ProgramPc\"")) {
+                    upd.incProgramPC();
+                  }else if (campo.equals("\"Index\"")) {
+                    upd.incIndex();
+                  }else if (campo.equals("\"FlagVector\"")) {
+                    upd.incFlagVector();
+                  }else if (campo.equals("\"StackPointer\"")) {
+                    upd.incStackPointer();
+                  }else{
+                    yybegin(error);
+                  }
+                  yybegin(YYINITIAL);                   
+                }
 <use> . { printError("uso no reconocido");
+          upd.incScanErrors();
           yybegin(error); 
         }
 
@@ -188,17 +204,20 @@ bitMask = [10]+(x+(yz*)*)*
                             yybegin(YYINITIAL);
                           }
 <bitSize>   . { printError("tamaño de bits no reconocido");
+                upd.incScanErrors();
                 yybegin(error);}                        
 
 
-<YYINITIAL>   "<insBitcode>" {yybegin(insBitcode);}
-<insBitcode>  {bitMask} {/*??*/}
-<insBitcode>  "</insBitcode>" {yybegin(YYINITIAL);}
-<insBitcode> .  { printError("Mascara de bits no reconocida");
+<YYINITIAL>   "<insBitCode>" {yybegin(insBitCode);}
+<insBitCode>  {bitMask} {/*??*/}
+<insBitCode>  "</insBitCode>" {yybegin(YYINITIAL);}
+<insBitCode> .  { printError("Mascara de bits no reconocida");
+                  upd.incScanErrors();
                   yybegin(error);}
 
 <error> "</"{letra}*">"  {  yybegin(YYINITIAL);
-                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));  }
+                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));
+                            System.out.println("------------------------------");  }
 <error> .|[\n\r] {/*ignorar*/}
 
 
