@@ -133,7 +133,7 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
 %integer
 %line
 %char
-%state ident, date, name, use, bitSize, insBitCode, comment, error, enduse, endname
+%state ident, date, name, use, bitSize, insBitCode, comment, error, enduse, endname, enddate
 %class UpdComp
 
 %%
@@ -154,11 +154,13 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
 
 
 <YYINITIAL>"<date>" { yybegin(date);  }
-<date>{date} {  campo = yytext(); }
-<date>"</date>" { upd.setFecha(campo);
+<date>{date}  { campo = yytext();
+                yybegin(enddate); //no aceptamos mas fechas 
+              }
+<date,enddate>"</date>" { upd.setFecha(campo);
                   campo = null;
                   yybegin(YYINITIAL);}
-<date> . {  printError("fecha no valida");
+<date,enddate> . {  printError("fecha no valida");
             upd.incScanErrors();
             yybegin(error); }
 
