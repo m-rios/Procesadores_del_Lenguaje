@@ -133,7 +133,7 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
 %integer
 %line
 %char
-%state ident, date, name, use, bitSize, insBitCode, comment, endident, error
+%state ident, date, name, use, bitSize, insBitCode, comment, error, enduse, endname
 %class UpdComp
 
 %%
@@ -164,8 +164,10 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
 
 
 <YYINITIAL> "<name>" {  yybegin(name);  }
-<name> {name} { campo = yytext(); }
-<name> "</name>" {  if(!upd.putReg(campo,campo)){
+<name> {name} { campo = yytext();
+                yybegin(endname); 
+              }
+<name, endname> "</name>" {  if(!upd.putReg(campo,campo)){
                       System.out.println("WARNING: Registro repetido: "+campo);
                     }else{
                       upd.incRegs();
@@ -173,15 +175,17 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
                     campo = null;
                     yybegin(YYINITIAL);
                   }
-<name> .  { printError("nombre no reconocido");
+<name, endname> .  { printError("nombre no reconocido");
             upd.incScanErrors();
             yybegin(error); 
           }
 
 
 <YYINITIAL> "<use>" { yybegin(use); }
-<use> {use} { campo = yytext(); }
-<use> "</use>"  { if (campo.equals("\"AllPurpose\"")) {                    
+<use> {use} { campo = yytext(); 
+              yybegin(enduse); //no aceptamos mas usos
+            }
+<use,enduse> "</use>"  { if (campo.equals("\"AllPurpose\"")) {                    
                     upd.incAllPurpose();
                   }else if (campo.equals("\"Accumulator\"")) {
                     upd.incAccumulator();
@@ -198,7 +202,7 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
                   }
                   yybegin(YYINITIAL);                   
                 }
-<use> . { printError("uso no reconocido");
+<use,enduse> . { printError("uso no reconocido");
           upd.incScanErrors();
           yybegin(error); 
         }
