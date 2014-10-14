@@ -27,11 +27,11 @@ ello, sólo estamos haciendo el análisis léxico. </comment>
 
 	<use>"StackPointer"</use>
 	<use>"ProgramPc"</use>
-	<insBitcode>0101</insBitCode>
-	<insBitcode>110xxy</insBitCode>
-	<insBitcode>110xxyzzzz</insBitcode>
-	<insBitcode>1011001xyyyyz</insBitcode>
-	<insBitcode>1011001xyzzz</insBitcode>
+	<insBitCode>0101</insBitCode>
+	<insBitCode>110xxy</insBitCode>
+	<insBitCode>110xxyzzzz</insBitCode>
+	<insBitCode>1011001xyyyyz</insBitCode>
+	<insBitCode>1011001xyzzz</insBitCode>
 
 <comment> Lo siguiente debería causar 3 errores léxicos.</comment>
 

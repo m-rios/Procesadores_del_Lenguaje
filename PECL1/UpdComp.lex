@@ -90,15 +90,21 @@ public String toString() {
     private String campo;
 
     public static void main (String argv[]) throws java.io.IOException {
-        Yylex yy;
+        UpdComp yy;
         if (argv.length != 1) {   
             System.out.println("Usage: updcomp [options] [path]");
             return;
         }
         if (argv[0].equals("-i")) {
-            yy = new Yylex(System.in);
+            yy = new UpdComp(System.in);
         } else {
-            yy = new Yylex(new FileInputStream(argv[0]));
+            String path_to_tokens[] = argv[0].split("\\.");
+            if (path_to_tokens[path_to_tokens.length-1].equals("upd")) {
+                yy = new UpdComp(new FileInputStream(argv[0]));
+            } else{
+              System.out.println("extension de archivo no reconocida");
+              return;
+            }
         }
         while (yy.yylex() != -1) ;
     } 
@@ -126,6 +132,7 @@ use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPoint
 %unicode
 %integer
 %line
+%char
 %state ident, date, name, use, bitSize, insBitCode, comment, endident, error
 %class UpdComp
 
