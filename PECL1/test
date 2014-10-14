@@ -3,12 +3,14 @@
 
 <date>20/20/2020</date>
 
-<comment>
 <name>'ah'</name>
 <name>'ah'</name>
 <name>'AX'</name>
-<use>"Accumulator"</use>
+</comment>
+
+<use>"Accumulator""Index"</use>
+<comment>
 <bitSize>10</bitSize>
 </comment>
 
-<insBitCode>10xxyyzz</insBitCode>
+

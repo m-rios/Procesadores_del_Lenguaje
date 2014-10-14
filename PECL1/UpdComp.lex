@@ -120,14 +120,14 @@ ident = {letra}({letra}|{dig})*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
 name = "'"{letra}{letra}"'"
 bitMask = [0-1]+(x+(yz*)*)*
-use = ("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer")
+use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer")\"
 
 
 %unicode
 %integer
 %line
-%char
 %state ident, date, name, use, bitSize, insBitCode, comment, endident, error
+%class UpdComp
 
 %%
 
@@ -139,9 +139,8 @@ use = ("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer
 <YYINITIAL> "<ident>" { yybegin(ident);  }
 <ident> {ident} { campo = yytext();  } 
 <ident> "</ident>" {  upd.setIdent(campo);
-                      System.out.println("campo: "+campo);
                       campo=null;
-                      yybegin(YYINITIAL);}
+                      yybegin(YYINITIAL); }
 <ident> . { printError("identificador no valido");
             upd.incScanErrors();
             yybegin(error); }
@@ -154,22 +153,23 @@ use = ("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer
                   yybegin(YYINITIAL);}
 <date> . {  printError("fecha no valida");
             upd.incScanErrors();
-            yybegin(error);  }
+            yybegin(error); }
 
 
-<YYINITIAL> "<name>" {yybegin(name);}
+<YYINITIAL> "<name>" {  yybegin(name);  }
 <name> {name} { campo = yytext(); }
 <name> "</name>" {  if(!upd.putReg(campo,campo)){
-                    System.out.println("WARNING: Registro repetido: "+campo);
+                      System.out.println("WARNING: Registro repetido: "+campo);
                     }else{
-                    upd.incRegs();
+                      upd.incRegs();
                     }
                     campo = null;
                     yybegin(YYINITIAL);
                   }
-<name> . {  printError("nombre no reconocido");
+<name> .  { printError("nombre no reconocido");
             upd.incScanErrors();
-            yybegin(error); }
+            yybegin(error); 
+          }
 
 
 <YYINITIAL> "<use>" { yybegin(use); }
@@ -222,4 +222,4 @@ use = ("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer
 
 
 {white} {}
-. {System.out.println("unknown error at line: "+(int)(yyline+1));}
+. {printError("caracter inesperado");}
