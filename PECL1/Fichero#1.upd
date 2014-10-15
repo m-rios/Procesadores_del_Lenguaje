@@ -26,7 +26,7 @@ seguido de un <use> y <insBitCode>. El análisis sintáctico se hará cargo de
 ello, sólo estamos haciendo el análisis léxico. </comment>
 
 	<use>"StackPointer"</use>
-	<use>"ProgramPc"</use>
+	<use>"ProgramPC"</use>
 	<insBitCode>0101</insBitCode>
 	<insBitCode>110xxy</insBitCode>
 	<insBitCode>110xxyzzzz</insBitCode>

@@ -117,122 +117,58 @@ public String toString() {
 %eof{
 System.out.println("------------------Report--------------------");
 System.out.println(upd.toString());
+System.out.println("Errores totales: "+upd.getNumErrorsScan());
 %eof}
 
 white = [\r\t\n" "]
 letra = [a-zA-Z]
 dig = [0-9]
-ident = {letra}({letra}|{dig})*
+ident = {letra}([^\n\r\t {cEtiqueta}])*
+prueba = {letra}[^\n\r\t \"<]*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
-name = "'"{letra}{letra}"'"
+name = "'"{letra}{letra}?"'"
 bitMask = [0-1]+(x+(yz*)*)*
-use = \"("AllPurpose"|"Accumulator"|"ProgramPc"|"Index"|"FlagVector"|"StackPointer")\"
 
+marca = (ident|date|name|use|bitSize|insBitCode)
+aEtiqueta = "<"{marca}">"
+cEtiqueta = "</"{marca}">"
 
 %unicode
 %integer
 %line
-%char
-%state ident, date, name, use, bitSize, insBitCode, comment, error, enduse, endname, enddate
+%state comment
 %class UpdComp
 
 %%
 
-<YYINITIAL> "<comment>" { yybegin(comment);  }
+<YYINITIAL> "<comment>" { yybegin(comment);}
 <comment> . {/*ignorar*/}
-<comment> "</comment>" { yybegin(YYINITIAL);  } 
+<comment> "</comment>" {  yybegin(YYINITIAL);}
 
+<YYINITIAL> {aEtiqueta} {/*se acepta, no se hace nada*/}
+<YYINITIAL> {cEtiqueta} {/*se acepta, no se hace nada*/}
 
-<YYINITIAL> "<ident>" { yybegin(ident);  }
-<ident> {ident} { campo = yytext();  } 
-<ident> "</ident>" {  upd.setIdent(campo);
-                      campo=null;
-                      yybegin(YYINITIAL); }
-<ident> . { printError("identificador no valido");
-            upd.incScanErrors();
-            yybegin(error); }
+<YYINITIAL> {prueba} { upd.setIdent(yytext());
+System.out.println("ident: "+yytext()); }
 
-
-<YYINITIAL>"<date>" { yybegin(date);  }
-<date>{date}  { campo = yytext();
-                yybegin(enddate); //no aceptamos mas fechas 
-              }
-<date,enddate>"</date>" { upd.setFecha(campo);
-                  campo = null;
-                  yybegin(YYINITIAL);}
-<date,enddate> . {  printError("fecha no valida");
-            upd.incScanErrors();
-            yybegin(error); }
-
-
-<YYINITIAL> "<name>" {  yybegin(name);  }
-<name> {name} { campo = yytext();
-                yybegin(endname); 
-              }
-<name, endname> "</name>" {  if(!upd.putReg(campo,campo)){
-                      System.out.println("WARNING: Registro repetido: "+campo);
+<YYINITIAL> {date}  { upd.setFecha(yytext()); }
+<YYINITIAL> {name}  {  if(!upd.putReg(yytext(),yytext())){
+                      System.out.println("WARNING: Registro repetido: "+yytext());
                     }else{
                       upd.incRegs();
                     }
                     campo = null;
-                    yybegin(YYINITIAL);
-                  }
-<name, endname> .  { printError("nombre no reconocido");
-            upd.incScanErrors();
-            yybegin(error); 
-          }
-
-
-<YYINITIAL> "<use>" { yybegin(use); }
-<use> {use} { campo = yytext(); 
-              yybegin(enduse); //no aceptamos mas usos
-            }
-<use,enduse> "</use>"  { if (campo.equals("\"AllPurpose\"")) {                    
-                    upd.incAllPurpose();
-                  }else if (campo.equals("\"Accumulator\"")) {
-                    upd.incAccumulator();
-                  }else if (campo.equals("\"ProgramPc\"")) {
-                    upd.incProgramPC();
-                  }else if (campo.equals("\"Index\"")) {
-                    upd.incIndex();
-                  }else if (campo.equals("\"FlagVector\"")) {
-                    upd.incFlagVector();
-                  }else if (campo.equals("\"StackPointer\"")) {
-                    upd.incStackPointer();
-                  }else{
-                    yybegin(error);
-                  }
-                  yybegin(YYINITIAL);                   
                 }
-<use,enduse> . { printError("uso no reconocido");
-          upd.incScanErrors();
-          yybegin(error); 
-        }
+<YYINITIAL> \"AllPurpose\"  { upd.incAllPurpose();  }
+<YYINITIAL> \"Accumulator\"  { upd.incAccumulator(); }
+<YYINITIAL> \"ProgramPC\"   { upd.incProgramPC(); }
+<YYINITIAL> \"Index\"       { upd.incIndex(); }
+<YYINITIAL> \"FlagVector\"  { upd.incFlagVector();  }
+<YYINITIAL> \"StackPointer\"  { upd.incStackPointer();  }
 
+<YYINITIAL> [1-9][0-9]*     { upd.addBits(Integer.parseInt(yytext())); }
 
-<YYINITIAL> "<bitSize>" { yybegin(bitSize); }
-<bitSize>   {dig}+ {  campo=yytext(); }
-<bitSize>   "</bitSize>"  { upd.addBits(Integer.parseInt(campo));
-                            campo=null;
-                            yybegin(YYINITIAL);
-                          }
-<bitSize>   . { printError("tamaño de bits no reconocido");
-                upd.incScanErrors();
-                yybegin(error);}                        
+<YYINITIAL> {bitMask}       { /*no tenemos nada que hacer*/ }
 
-
-<YYINITIAL>   "<insBitCode>" {yybegin(insBitCode);}
-<insBitCode>  {bitMask} {/*??*/}
-<insBitCode>  "</insBitCode>" {yybegin(YYINITIAL);}
-<insBitCode> .  { printError("Mascara de bits no reconocida");
-                  upd.incScanErrors();
-                  yybegin(error);}
-
-<error> "</"{letra}*">"  {  yybegin(YYINITIAL);
-                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));
-                            System.out.println("------------------------------");  }
-<error> .|[\n\r] {/*ignorar*/}
-
-
-{white} {}
-. {printError("caracter inesperado");}
+{white}         { /*ignorar*/ }
+.               { printError("token "+yytext()+" no reconocido"); upd.incScanErrors();}

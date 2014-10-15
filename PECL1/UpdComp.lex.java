@@ -122,7 +122,6 @@ class UpdComp {
 	private int yy_buffer_start;
 	private int yy_buffer_end;
 	private char yy_buffer[];
-	private int yychar;
 	private int yyline;
 	private boolean yy_at_bol;
 	private int yy_lexical_state;
@@ -149,7 +148,6 @@ class UpdComp {
 		yy_buffer_index = 0;
 		yy_buffer_start = 0;
 		yy_buffer_end = 0;
-		yychar = 0;
 		yyline = 0;
 		yy_at_bol = true;
 		yy_lexical_state = YYINITIAL;
@@ -161,34 +159,15 @@ class UpdComp {
 
 System.out.println("------------------Report--------------------");
 System.out.println(upd.toString());
+System.out.println("Errores totales: "+upd.getNumErrorsScan());
 		}
 		yy_eof_done = true;
 	}
-	private final int use = 4;
-	private final int name = 3;
-	private final int enddate = 11;
-	private final int date = 2;
-	private final int enduse = 9;
-	private final int insBitCode = 6;
-	private final int ident = 1;
-	private final int comment = 7;
-	private final int bitSize = 5;
-	private final int error = 8;
 	private final int YYINITIAL = 0;
-	private final int endname = 10;
+	private final int comment = 1;
 	private final int yy_state_dtrans[] = {
 		0,
-		76,
-		83,
-		93,
-		100,
-		143,
-		152,
-		164,
-		171,
-		173,
-		174,
-		175
+		111
 	};
 	private void yybegin (int state) {
 		yy_lexical_state = state;
@@ -258,8 +237,6 @@ System.out.println(upd.toString());
 				yy_last_was_cr=true;
 			} else yy_last_was_cr=false;
 		}
-		yychar = yychar
-			+ yy_buffer_index - yy_buffer_start;
 		yy_buffer_start = yy_buffer_index;
 	}
 	private void yy_mark_end () {
@@ -361,35 +338,35 @@ System.out.println(upd.toString());
 		/* 17 */ YY_NO_ANCHOR,
 		/* 18 */ YY_NO_ANCHOR,
 		/* 19 */ YY_NO_ANCHOR,
-		/* 20 */ YY_NO_ANCHOR,
+		/* 20 */ YY_NOT_ACCEPT,
 		/* 21 */ YY_NO_ANCHOR,
 		/* 22 */ YY_NO_ANCHOR,
 		/* 23 */ YY_NO_ANCHOR,
 		/* 24 */ YY_NO_ANCHOR,
-		/* 25 */ YY_NO_ANCHOR,
+		/* 25 */ YY_NOT_ACCEPT,
 		/* 26 */ YY_NO_ANCHOR,
 		/* 27 */ YY_NO_ANCHOR,
 		/* 28 */ YY_NO_ANCHOR,
-		/* 29 */ YY_NO_ANCHOR,
+		/* 29 */ YY_NOT_ACCEPT,
 		/* 30 */ YY_NO_ANCHOR,
 		/* 31 */ YY_NO_ANCHOR,
 		/* 32 */ YY_NO_ANCHOR,
 		/* 33 */ YY_NOT_ACCEPT,
 		/* 34 */ YY_NO_ANCHOR,
 		/* 35 */ YY_NO_ANCHOR,
-		/* 36 */ YY_NO_ANCHOR,
+		/* 36 */ YY_NOT_ACCEPT,
 		/* 37 */ YY_NO_ANCHOR,
-		/* 38 */ YY_NO_ANCHOR,
-		/* 39 */ YY_NO_ANCHOR,
-		/* 40 */ YY_NO_ANCHOR,
-		/* 41 */ YY_NO_ANCHOR,
-		/* 42 */ YY_NO_ANCHOR,
-		/* 43 */ YY_NO_ANCHOR,
+		/* 38 */ YY_NOT_ACCEPT,
+		/* 39 */ YY_NOT_ACCEPT,
+		/* 40 */ YY_NOT_ACCEPT,
+		/* 41 */ YY_NOT_ACCEPT,
+		/* 42 */ YY_NOT_ACCEPT,
+		/* 43 */ YY_NOT_ACCEPT,
 		/* 44 */ YY_NOT_ACCEPT,
-		/* 45 */ YY_NO_ANCHOR,
-		/* 46 */ YY_NO_ANCHOR,
-		/* 47 */ YY_NO_ANCHOR,
-		/* 48 */ YY_NO_ANCHOR,
+		/* 45 */ YY_NOT_ACCEPT,
+		/* 46 */ YY_NOT_ACCEPT,
+		/* 47 */ YY_NOT_ACCEPT,
+		/* 48 */ YY_NOT_ACCEPT,
 		/* 49 */ YY_NOT_ACCEPT,
 		/* 50 */ YY_NOT_ACCEPT,
 		/* 51 */ YY_NOT_ACCEPT,
@@ -506,91 +483,49 @@ System.out.println(upd.toString());
 		/* 162 */ YY_NOT_ACCEPT,
 		/* 163 */ YY_NOT_ACCEPT,
 		/* 164 */ YY_NOT_ACCEPT,
-		/* 165 */ YY_NOT_ACCEPT,
-		/* 166 */ YY_NOT_ACCEPT,
-		/* 167 */ YY_NOT_ACCEPT,
-		/* 168 */ YY_NOT_ACCEPT,
-		/* 169 */ YY_NOT_ACCEPT,
-		/* 170 */ YY_NOT_ACCEPT,
-		/* 171 */ YY_NOT_ACCEPT,
-		/* 172 */ YY_NOT_ACCEPT,
-		/* 173 */ YY_NOT_ACCEPT,
-		/* 174 */ YY_NOT_ACCEPT,
-		/* 175 */ YY_NOT_ACCEPT,
-		/* 176 */ YY_NOT_ACCEPT,
-		/* 177 */ YY_NOT_ACCEPT,
-		/* 178 */ YY_NOT_ACCEPT,
-		/* 179 */ YY_NOT_ACCEPT,
-		/* 180 */ YY_NOT_ACCEPT,
-		/* 181 */ YY_NOT_ACCEPT,
-		/* 182 */ YY_NOT_ACCEPT,
-		/* 183 */ YY_NOT_ACCEPT,
-		/* 184 */ YY_NOT_ACCEPT,
-		/* 185 */ YY_NOT_ACCEPT,
-		/* 186 */ YY_NOT_ACCEPT,
-		/* 187 */ YY_NOT_ACCEPT,
-		/* 188 */ YY_NOT_ACCEPT,
-		/* 189 */ YY_NOT_ACCEPT,
-		/* 190 */ YY_NOT_ACCEPT,
-		/* 191 */ YY_NOT_ACCEPT,
-		/* 192 */ YY_NOT_ACCEPT,
-		/* 193 */ YY_NOT_ACCEPT,
-		/* 194 */ YY_NOT_ACCEPT,
-		/* 195 */ YY_NOT_ACCEPT,
-		/* 196 */ YY_NOT_ACCEPT,
-		/* 197 */ YY_NOT_ACCEPT,
-		/* 198 */ YY_NOT_ACCEPT,
-		/* 199 */ YY_NOT_ACCEPT,
-		/* 200 */ YY_NOT_ACCEPT,
-		/* 201 */ YY_NOT_ACCEPT
+		/* 165 */ YY_NOT_ACCEPT
 	};
 	private int yy_cmap[] = unpackFromString(1,65538,
-"9:9,39,38,9:2,38,9:18,39,9,19,9:4,16,9:7,10,36:2,14:8,9:2,1,9,8,9:2,20,34,3" +
-"5,13:2,28,13:2,26,13:6,22,13:2,30,13:2,29,13:4,9:6,15,32,2,12,5,13,25,13,11" +
-",13,31,21,4,6,3,24,13,23,18,7,17,13:2,27,37,33,9:65413,0:2")[0];
+"22:9,9,40,22:2,40,22:18,9,22,25,22:4,24,22:7,10,23,38,37:8,22:2,1,22,8,22:2" +
+",26,19,20,21:2,34,21:2,32,21:6,28,21:2,17,21:2,35,21:4,22:6,13,16,2,12,5,21" +
+",31,21,11,21,36,27,4,6,3,30,21,29,15,7,14,21:2,33,39,18,22:65413,0:2")[0];
 
-	private int yy_rmap[] = unpackFromString(1,202,
-"0,1,2,1:8,3,4,1,5,1:2,6,1:2,7,1:2,8,9,1,10,11,1,12,1,13,1,14,1:7,15,1:2,16," +
-"17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41," +
-"42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66," +
-"67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91," +
-"92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112" +
-",113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,13" +
-"1,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,1" +
-"50,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168," +
-"169,170,171,172,173")[0];
+	private int yy_rmap[] = unpackFromString(1,166,
+"0,1,2,3,1,4,5,1:11,6,1,7,1,8,9,1,10,11,12,13,14,15,16,17,18,19,20,21,22,23," +
+"24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48," +
+"49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,44,68,69,70,71,72," +
+"73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97," +
+"98,99,100,101,102,103,104,105,106,107,108,109,44,110,111,112,113,114,115,11" +
+"6,117,118,119,120,121,122,123,124,125,126,127,73,128,129,130,131,132,73,133" +
+",134,135,136,137,138,139,140,141,142,143,144,145,146")[0];
 
-	private int yy_nxt[][] = unpackFromString(174,40,
-"1,2,34:36,3:2,-1:42,33,-1:3,44,-1:4,49,176,-1:4,50,-1:14,51,-1:17,77,-1:31," +
-"12:6,-1:3,12:5,-1,12:2,-1,12:18,-1:12,84,-1:39,94,-1:39,101,-1:39,144,-1:43" +
-",24,-1:21,24,-1:13,153,-1:56,41,-1:8,27,-1:13,165,-1:39,172,-1:32,52,-1:63," +
-"41,-1:9,48,-1:17,178,-1:38,85,-1:21,85,-1:5,95:6,-1:3,95:3,-1,95,-1,95:2,-1" +
-",95:16,-1,95,-1:22,102,-1,103,-1:3,104,-1,105,-1,106,-1:36,41,-1:5,48,-1:3," +
-"48,-1:8,177,-1:5,53,-1:45,179,-1:32,180,-1:32,191,-1:40,56,-1:41,57,-1:66,6" +
-"1,-1:11,62,-1:38,63,-1:42,4,-1:61,182,-1:17,5,-1:42,183,-1:35,65,-1:40,6,-1" +
-":37,67,-1:41,7,-1:64,69,-1:13,70,-1:67,71,-1:9,72,-1:42,8,-1:34,73,-1:44,9," +
-"-1:43,74,-1:32,75,-1:42,10,-1:31,1,11,12:6,35:3,12:3,35,12,35,12:2,35,12:16" +
-",35,12,3,35,-1:11,78,-1:40,79,-1:32,80,-1:40,81,-1:40,82,-1:40,13,-1:31,1,1" +
-"4,36:12,45,36:21,45,36,3,36,-1:12,86,-1:37,87,-1:44,88,-1:38,184,-1:21,184," +
-"-1:10,89,-1:37,91,-1:44,193,-1:37,15,-1:45,16,-1:21,16,-1:3,1,17,37:14,46,3" +
-"7:21,3,37,-1:6,96,-1:35,97:6,-1:3,97:3,-1,97,-1,97:2,-1,97:16,-1,97,-1:17,1" +
-"94,-1:40,18,-1:28,99,-1:42,19,-1:31,1,20,38:17,47,38:18,3,38,-1:17,107,-1:2" +
-"4,108,-1:18,185,-1:41,109,-1:22,110,-1:54,111,-1:25,186,-1:50,112,-1:23,113" +
-",-1:40,115,-1:48,187,-1:42,188,-1:29,117,-1:51,196,-1:44,118,-1:42,119,-1:1" +
-"6,122,-1:45,21,-1:48,123,-1:45,200,-1:43,124,-1:41,125,-1:41,126,-1:31,128," +
-"-1:35,22,-1:25,129,-1:56,130,-1:38,131,-1:42,190,-1:17,133,-1:40,134,-1:51," +
-"133,-1:46,136,-1:24,137,-1:43,138,-1:46,139,-1:23,124,-1:40,140,-1:42,141,-" +
-"1:38,124,-1:57,124,-1:23,142,-1:37,140,-1:34,1,23,39:12,24,39:21,24,39,3,39" +
-",-1:32,145,-1:18,146,-1:35,147,-1:62,148,-1:20,149,-1:61,150,-1:11,151,-1:4" +
-"2,25,-1:31,1,26,40:34,27,40,3,40,-1:11,154,-1:34,155,-1:51,156,-1:55,157,-1" +
-":16,158,-1:35,159,-1:67,160,-1:7,161,-1:48,162,-1:32,163,-1:42,28,-1:31,1,2" +
-"9,42:36,3,42,-1:2,166,-1:40,198,-1:41,168,-1:40,169,-1:40,170,-1:40,30,-1:3" +
-"1,1,31,43:38,-1:2,172:6,32,-1:2,172:3,-1,172,-1,172:2,-1,172:16,-1,172,-1:2" +
-",1,20,38:36,3,38,1,17,37:36,3,37,1,14,36:36,3,36,-1:15,54,-1:42,55,-1:25,19" +
-"2,-1:40,58,-1:41,59,-1:37,64,-1:45,66,-1:35,68,-1:46,90,-1:21,90,-1:24,114," +
-"-1:33,116,-1:29,120,-1:59,121,-1:31,127,-1:25,135,-1:40,181,-1:40,60,-1:48," +
-"201,-1:21,201,-1:7,98,-1:49,92,-1:21,92,-1:7,189,-1:39,132,-1:39,199,-1:39," +
-"167,-1:50,197,-1:38,195,-1:21,195,-1:3");
+	private int yy_nxt[][] = unpackFromString(147,41,
+"1,2,3:6,21,4,21,3:11,21,5,26,30,3:11,6,23,3,4,-1:43,20,-1:3,25,-1:3,29,33,1" +
+"18,-1,36,-1,38,-1:26,3:7,-1,3:15,-1,3:14,-1:24,22,-1:9,27,-1:3,39,22,-1:25," +
+"28,-1:13,28:2,-1:12,112,-1:33,46,-1:47,50,-1:12,31,-1:9,27,-1:4,31,-1:25,32" +
+",-1:9,27,-1:3,28,32,-1:15,124,-1:29,40:6,-1:3,40:11,-1:4,40:11,-1:2,40,-1:3" +
+"4,27,-1:5,34,-1:11,50,-1:12,35,-1:13,35:2,-1:8,47,-1:4,119,48,-1,155,-1,121" +
+",-1:41,41,-1:8,42,-1,43,-1:3,44,-1,45,-1:29,31,-1:9,27,-1:4,31,-1:12,50,-1:" +
+"12,37,-1:9,27,-1:3,35,37,-1:8,120,-1:5,49,-1:46,34,-1:14,27,-1:5,34,-1:24,3" +
+"5,-1:13,35:2,-1:17,126,-1:48,37,-1:9,27,-1:3,35,37,-1:13,142,-1:39,50,-1:32" +
+",51:6,-1:3,51:11,-1:2,7,-1,51:11,-1:2,51,-1:8,125,-1:35,52,-1:24,123,-1:42," +
+"53,-1:17,54,-1:61,144,-1:17,143,-1:49,161,-1:40,56,-1:32,58,-1:58,127,-1:13" +
+",127:2,-1:26,7,-1:18,62,-1:41,64,-1:49,131,-1:43,165,-1:32,151,-1:52,66,-1:" +
+"27,67,-1:39,60,-1:43,8,-1:49,133,-1:37,149,-1:54,70,-1:43,71,-1:17,9,-1:43," +
+"76,-1:36,60,-1:43,146,-1:66,78,-1:18,79,-1:55,156,-1:44,80,-1:42,81,-1:11,1" +
+"35,-1:41,65,-1:40,82,-1:51,83,-1:50,84,-1:41,86,-1:36,10,-1:20,87,-1:55,138" +
+",-1:23,90,-1:64,91,-1:43,92,-1:12,94,-1:46,11,-1:37,65,-1:46,97,-1:42,164,-" +
+"1:30,98,-1:65,99,-1:19,100,-1:45,83,-1:51,12,-1:13,12:2,-1:8,102,-1:49,103," +
+"-1:45,104,-1:23,105,-1:49,89,-1:35,140,-1:38,106,-1:60,13,-1:44,107,-1:36,1" +
+"4,-1:40,15,-1:44,110,-1:36,16,-1:40,17,-1:15,1,18,24:38,4,-1:2,113,-1:41,15" +
+"3,-1:42,115,-1:41,116,-1:41,117,-1:41,19,-1:45,122,-1:33,55,-1:5,157,-1:43," +
+"57,-1:36,129,-1:36,59,-1:60,63,-1:17,126,-1:49,128,-1:50,68,-1:13,68:2,-1:4" +
+",69,-1:45,158,-1:39,75,-1:39,72,-1:66,73,-1:20,77,-1:43,85,-1:33,88,-1:51,8" +
+"9,-1:42,139,-1:23,95,-1:40,101,-1:42,108,-1:64,109,-1:18,61,-1:37,147,-1:49" +
+",132,-1:50,162,-1:13,162:2,-1:7,74,-1:46,136,-1:33,134,-1:59,96,-1:13,96:2," +
+"-1:6,93,-1:40,154,-1:40,114,-1:51,145,-1:38,152,-1:32,130,-1:52,148,-1:30,1" +
+"37,-1:36,141,-1:41,151,-1:59,150,-1:13,150:2,-1:13,159,-1:36,160,-1:52,163," +
+"-1:21");
 
 	public int yylex ()
 		throws java.io.IOException {
@@ -642,258 +577,135 @@ System.out.println(upd.toString());
 					case -2:
 						break;
 					case 2:
-						{printError("caracter inesperado");}
+						{ printError("token "+yytext()+" no reconocido"); upd.incScanErrors();}
 					case -3:
 						break;
 					case 3:
-						{}
+						{ upd.setIdent(yytext());
+System.out.println("ident: "+yytext()); }
 					case -4:
 						break;
 					case 4:
-						{ yybegin(use); }
+						{ /*ignorar*/ }
 					case -5:
 						break;
 					case 5:
-						{  yybegin(name);  }
+						{ /*no tenemos nada que hacer*/ }
 					case -6:
 						break;
 					case 6:
-						{ yybegin(date);  }
+						{ upd.addBits(Integer.parseInt(yytext())); }
 					case -7:
 						break;
 					case 7:
-						{ yybegin(ident);  }
-					case -8:
-						break;
-					case 8:
-						{ yybegin(comment);  }
-					case -9:
-						break;
-					case 9:
-						{ yybegin(bitSize); }
-					case -10:
-						break;
-					case 10:
-						{yybegin(insBitCode);}
-					case -11:
-						break;
-					case 11:
-						{ printError("identificador no valido");
-            upd.incScanErrors();
-            yybegin(error); }
-					case -12:
-						break;
-					case 12:
-						{ campo = yytext();  }
-					case -13:
-						break;
-					case 13:
-						{  upd.setIdent(campo);
-                      campo=null;
-                      yybegin(YYINITIAL); }
-					case -14:
-						break;
-					case 14:
-						{  printError("fecha no valida");
-            upd.incScanErrors();
-            yybegin(error); }
-					case -15:
-						break;
-					case 15:
-						{ upd.setFecha(campo);
-                  campo = null;
-                  yybegin(YYINITIAL);}
-					case -16:
-						break;
-					case 16:
-						{ campo = yytext();
-                yybegin(enddate); //no aceptamos mas fechas 
-              }
-					case -17:
-						break;
-					case 17:
-						{ printError("nombre no reconocido");
-            upd.incScanErrors();
-            yybegin(error); 
-          }
-					case -18:
-						break;
-					case 18:
-						{ campo = yytext();
-                yybegin(endname); 
-              }
-					case -19:
-						break;
-					case 19:
-						{  if(!upd.putReg(campo,campo)){
-                      System.out.println("WARNING: Registro repetido: "+campo);
+						{  if(!upd.putReg(yytext(),yytext())){
+                      System.out.println("WARNING: Registro repetido: "+yytext());
                     }else{
                       upd.incRegs();
                     }
                     campo = null;
-                    yybegin(YYINITIAL);
-                  }
+                }
+					case -8:
+						break;
+					case 8:
+						{/*se acepta, no se hace nada*/}
+					case -9:
+						break;
+					case 9:
+						{/*se acepta, no se hace nada*/}
+					case -10:
+						break;
+					case 10:
+						{ upd.incIndex(); }
+					case -11:
+						break;
+					case 11:
+						{ yybegin(comment);}
+					case -12:
+						break;
+					case 12:
+						{ upd.setFecha(yytext()); }
+					case -13:
+						break;
+					case 13:
+						{ upd.incProgramPC(); }
+					case -14:
+						break;
+					case 14:
+						{ upd.incAllPurpose();  }
+					case -15:
+						break;
+					case 15:
+						{ upd.incFlagVector();  }
+					case -16:
+						break;
+					case 16:
+						{ upd.incAccumulator(); }
+					case -17:
+						break;
+					case 17:
+						{ upd.incStackPointer();  }
+					case -18:
+						break;
+					case 18:
+						{/*ignorar*/}
+					case -19:
+						break;
+					case 19:
+						{  yybegin(YYINITIAL);}
 					case -20:
 						break;
-					case 20:
-						{ printError("uso no reconocido");
-          upd.incScanErrors();
-          yybegin(error); 
-        }
+					case 21:
+						{ printError("token "+yytext()+" no reconocido"); upd.incScanErrors();}
 					case -21:
 						break;
-					case 21:
-						{ if (campo.equals("\"AllPurpose\"")) {                    
-                    upd.incAllPurpose();
-                  }else if (campo.equals("\"Accumulator\"")) {
-                    upd.incAccumulator();
-                  }else if (campo.equals("\"ProgramPc\"")) {
-                    upd.incProgramPC();
-                  }else if (campo.equals("\"Index\"")) {
-                    upd.incIndex();
-                  }else if (campo.equals("\"FlagVector\"")) {
-                    upd.incFlagVector();
-                  }else if (campo.equals("\"StackPointer\"")) {
-                    upd.incStackPointer();
-                  }else{
-                    yybegin(error);
-                  }
-                  yybegin(YYINITIAL);                   
-                }
+					case 22:
+						{ /*no tenemos nada que hacer*/ }
 					case -22:
 						break;
-					case 22:
-						{ campo = yytext(); 
-              yybegin(enduse); //no aceptamos mas usos
-            }
+					case 23:
+						{ upd.addBits(Integer.parseInt(yytext())); }
 					case -23:
 						break;
-					case 23:
-						{ printError("tama??o de bits no reconocido");
-                upd.incScanErrors();
-                yybegin(error);}
+					case 24:
+						{/*ignorar*/}
 					case -24:
 						break;
-					case 24:
-						{  campo=yytext(); }
+					case 26:
+						{ printError("token "+yytext()+" no reconocido"); upd.incScanErrors();}
 					case -25:
 						break;
-					case 25:
-						{ upd.addBits(Integer.parseInt(campo));
-                            campo=null;
-                            yybegin(YYINITIAL);
-                          }
+					case 27:
+						{ /*no tenemos nada que hacer*/ }
 					case -26:
 						break;
-					case 26:
-						{ printError("Mascara de bits no reconocida");
-                  upd.incScanErrors();
-                  yybegin(error);}
+					case 28:
+						{ upd.addBits(Integer.parseInt(yytext())); }
 					case -27:
 						break;
-					case 27:
-						{/*??*/}
+					case 30:
+						{ printError("token "+yytext()+" no reconocido"); upd.incScanErrors();}
 					case -28:
 						break;
-					case 28:
-						{yybegin(YYINITIAL);}
+					case 31:
+						{ /*no tenemos nada que hacer*/ }
 					case -29:
 						break;
-					case 29:
-						{/*ignorar*/}
+					case 32:
+						{ upd.addBits(Integer.parseInt(yytext())); }
 					case -30:
 						break;
-					case 30:
-						{ yybegin(YYINITIAL);  }
+					case 34:
+						{ /*no tenemos nada que hacer*/ }
 					case -31:
 						break;
-					case 31:
-						{/*ignorar*/}
+					case 35:
+						{ upd.addBits(Integer.parseInt(yytext())); }
 					case -32:
 						break;
-					case 32:
-						{  yybegin(YYINITIAL);
-                            System.out.println("recuperacion de error en linea: "+(int)(yyline+1));
-                            System.out.println("------------------------------");  }
-					case -33:
-						break;
-					case 34:
-						{printError("caracter inesperado");}
-					case -34:
-						break;
-					case 35:
-						{ printError("identificador no valido");
-            upd.incScanErrors();
-            yybegin(error); }
-					case -35:
-						break;
-					case 36:
-						{  printError("fecha no valida");
-            upd.incScanErrors();
-            yybegin(error); }
-					case -36:
-						break;
 					case 37:
-						{ printError("nombre no reconocido");
-            upd.incScanErrors();
-            yybegin(error); 
-          }
-					case -37:
-						break;
-					case 38:
-						{ printError("uso no reconocido");
-          upd.incScanErrors();
-          yybegin(error); 
-        }
-					case -38:
-						break;
-					case 39:
-						{ printError("tama??o de bits no reconocido");
-                upd.incScanErrors();
-                yybegin(error);}
-					case -39:
-						break;
-					case 40:
-						{ printError("Mascara de bits no reconocida");
-                  upd.incScanErrors();
-                  yybegin(error);}
-					case -40:
-						break;
-					case 41:
-						{/*??*/}
-					case -41:
-						break;
-					case 42:
-						{/*ignorar*/}
-					case -42:
-						break;
-					case 43:
-						{/*ignorar*/}
-					case -43:
-						break;
-					case 45:
-						{  printError("fecha no valida");
-            upd.incScanErrors();
-            yybegin(error); }
-					case -44:
-						break;
-					case 46:
-						{ printError("nombre no reconocido");
-            upd.incScanErrors();
-            yybegin(error); 
-          }
-					case -45:
-						break;
-					case 47:
-						{ printError("uso no reconocido");
-          upd.incScanErrors();
-          yybegin(error); 
-        }
-					case -46:
-						break;
-					case 48:
-						{/*??*/}
-					case -47:
+						{ upd.addBits(Integer.parseInt(yytext())); }
+					case -33:
 						break;
 					default:
 						yy_error(YY_E_INTERNAL,false);
