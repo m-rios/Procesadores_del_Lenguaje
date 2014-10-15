@@ -123,11 +123,10 @@ System.out.println("Errores totales: "+upd.getNumErrorsScan());
 white = [\r\t\n" "]
 letra = [a-zA-Z]
 dig = [0-9]
-ident = {letra}([^\n\r\t {cEtiqueta}])*
-prueba = {letra}[^\n\r\t \"<]*
+ident = {letra}[^\n\r\t \"<']*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
 name = "'"{letra}{letra}?"'"
-bitMask = [0-1]+(x+(yz*)*)*
+bitMask = [0-1]+(x*|x+y*|x+y+z*)
 
 marca = (ident|date|name|use|bitSize|insBitCode)
 aEtiqueta = "<"{marca}">"
@@ -148,8 +147,7 @@ cEtiqueta = "</"{marca}">"
 <YYINITIAL> {aEtiqueta} {/*se acepta, no se hace nada*/}
 <YYINITIAL> {cEtiqueta} {/*se acepta, no se hace nada*/}
 
-<YYINITIAL> {prueba} { upd.setIdent(yytext());
-System.out.println("ident: "+yytext()); }
+<YYINITIAL> {ident} { upd.setIdent(yytext());  }
 
 <YYINITIAL> {date}  { upd.setFecha(yytext()); }
 <YYINITIAL> {name}  {  if(!upd.putReg(yytext(),yytext())){

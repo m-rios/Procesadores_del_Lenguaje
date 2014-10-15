@@ -1,12 +1,51 @@
-<ident>hola"Index"</ident>
+<comment> prueba de insBitCodes correctos </comment> 
+00101
+1001x
+10xxyy
+100xxyzz
 
-<date>20/20/202020/20/2020</date>
-<name>'ah'</name>
-<name>'ah'</name>
-<name>'AX'</name>
+<comment> esto no se interpreta como insBitCode </comment>
+10y
+10z
+10xz
 
+<comment> los use y los name pueden ir seguidos y ser identificados </comment>
+'az''jk'
+"ProgramPC""Accumulator"
 
-<name>'na''no'<name>
+<comment>sin embargo esto debería dar error</comment>
+'am'jk'
+"ProgramPC"Accumulator"
 
-<use>"Accumulator""Index"</use>
-<bitSize>10</bitSize>
+<comment> esto no se identifica como entero </comment>
+015
+
+<comment> dos fechas seguidas son identificadas correctamente </comment>
+20/20/202030/30/3030
+
+<comment> esto debería dar error </comment>
+20/40 /1234
+
+<comment> en los comentarios se ignora todo:
+<name>'A'</name>
+<use>"Accumulator"</use>
+<bitSize>16</bitSize>
+</coment>
+
+<comment> las siguientes palabras reservadas no existen </comment>
+<test>
+<wrong/>
+
+<comment> este identificador vale </comment>
+identificator>
+
+<comment> pero este no </comment>
+identificator<
+
+<comment> si se nos olvida cerrar un comentario todo lo que vaya debajo
+		hasta el final del fichero se ignora
+
+<use>"StackPointer"</use>
+	<use>"ProgramPC"</use>
+	<insBitCode>0101</insBitCode>
+</comment>
