@@ -126,7 +126,7 @@ dig = [0-9]
 ident = {letra}[^\n\r\t \"<']*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
 name = "'"{letra}{letra}?"'"
-bitMask = [0-1]+(x*|x+y*|x+y+z*)
+bitMask = [0-1]+(x+(yz*)*)*
 
 marca = (ident|date|name|use|bitSize|insBitCode)
 aEtiqueta = "<"{marca}">"
