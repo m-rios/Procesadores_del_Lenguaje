@@ -138,26 +138,69 @@ cEtiqueta = "</"{marca}">"
 %state comment
 %class UpdComp
 
+%cup
+
 %%
 
 <YYINITIAL> "<comment>" { yybegin(comment);}
 <comment> . {/*ignorar*/}
 <comment> "</comment>" {  yybegin(YYINITIAL);}
 
-<YYINITIAL> {aEtiqueta} {/*se acepta, no se hace nada*/}
-<YYINITIAL> {cEtiqueta} {/*se acepta, no se hace nada*/}
 
-<YYINITIAL> {ident} { upd.setIdent(yytext());  }
+<YYINITIAL> "<upd>" { return new Symbol(sym.AUPD);}
+<YYINITIAL> "</upd>" { return new Symbol(sym.CUPD);}
+<YYINITIAL> "<descr>" { return new Symbol(sym.ADESCR);}
+<YYINITIAL> "</descr>" { return new Symbol(sym.CDESCR);}
+<YYINITIAL> "<ident>" { return new Symbol(sym.AIDENT);}
+<YYINITIAL> "</ident>" { return new Symbol(sym.CIDENT);}
+<YYINITIAL> "<date>" { return new Symbol(sym.ADATE);}
+<YYINITIAL> "</date>" { return new Symbol(sym.CDATE);}
+<YYINITIAL> "<storage>" { return new Symbol(sym.ASTORAGE);}
+<YYINITIAL> "</storage>" { return new Symbol(sym.CSTORAGE);}
+<YYINITIAL> "<register>" { return new Symbol(sym.AREGISTER);}
+<YYINITIAL> "</register>" { return new Symbol(sym.CREGISTER);}
+<YYINITIAL> "<name>" { return new Symbol(sym.ANAME);}
+<YYINITIAL> "</name>" { return new Symbol(sym.CNAME);}
+<YYINITIAL> "<use>" { return new Symbol(sym.AUSE);}
+<YYINITIAL> "</use>" { return new Symbol(sym.CUSE);}
+<YYINITIAL> "<bitSize>" { return new Symbol(sym.ABITSIZE);}
+<YYINITIAL> "</bitSize>" { return new Symbol(sym.CBITSIZE);}
+<YYINITIAL> "<regbitcode>" { return new Symbol(sym.AREGBITCODE);}
+<YYINITIAL> "</regbitcode>" { return new Symbol(sym.CREGBITCODE);}
+<YYINITIAL> "<group>" { return new Symbol(sym.AGROUP);}
+<YYINITIAL> "</group>" { return new Symbol(sym.CGROUP);}
+<YYINITIAL> "<registers>" { return new Symbol(sym.AREGISTERS);}
+<YYINITIAL> "</registers>" { return new Symbol(sym.CREGISTERS);}
+<YYINITIAL> "<insns>" { return new Symbol(sym.AINSNS);}
+<YYINITIAL> "</insns>" { return new Symbol(sym.CINSNS);}
+<YYINITIAL> "<ins>" { return new Symbol(sym.AINS);}
+<YYINITIAL> "</ins>" { return new Symbol(sym.CINS);}
+<YYINITIAL> "<opcode>" { return new Symbol(sym.AOPCODE);}
+<YYINITIAL> "</opcode>" { return new Symbol(sym.COPCODE);}
+<YYINITIAL> "<in>" { return new Symbol(sym.AIN);}
+<YYINITIAL> "</in>" { return new Symbol(sym.CIN);}
+<YYINITIAL> "<out>" { return new Symbol(sym.AOUT);}
+<YYINITIAL> "</out>" { return new Symbol(sym.COUT);}
+<YYINITIAL> "<insbitcode>" { return new Symbol(sym.AINSBITCODE);}
+<YYINITIAL> "</insbitcode>" { return new Symbol(sym.CINSBITCODE);}
+<YYINITIAL> "<behav>" { return new Symbol(sym.ABEHAV);}
+<YYINITIAL> "</behav>" { return new Symbol(sym.CBEHAV);}
 
-<YYINITIAL> {date}  { upd.setFecha(yytext()); }
+
+<YYINITIAL> {ident} { upd.setIdent(yytext()); 
+return new Symbol(sym.IDENT); }
+
+<YYINITIAL> {date}  { upd.setFecha(yytext()); 
+return new Symbol(sym.DATE);}
 <YYINITIAL> {name}  {  if(!upd.putReg(yytext(),yytext())){
                       System.out.println("WARNING: Registro repetido: "+yytext());
                     }else{
                       upd.incRegs();
                     }
                     campo = null;
+                    return new Symbol(sym.NAME);
                 }
-<YYINITIAL> \"AllPurpose\"  { upd.incAllPurpose();  }
+<YYINITIAL> \"AllPurpose\"  { upd.incAllPurpose(); return new Symbol(symbol.ALLPURPOSE); }
 <YYINITIAL> \"Accumulator\"  { upd.incAccumulator(); }
 <YYINITIAL> \"ProgramPC\"   { upd.incProgramPC(); }
 <YYINITIAL> \"Index\"       { upd.incIndex(); }

@@ -1,0 +1,39 @@
+<upd>
+	<descr>
+		<comment> Contiene atributos que identifican el microprocesador
+		que se describe </comment>
+		<ident>X8086</ident>
+		<comment> La fecha es opcional</comment>
+		<date>31/01/1978</date>
+	</descr>
+	<storage>
+		<comment> Define los componentes de almacenamiento del microprocesador,
+		pudiendo ser registros solitarios o agrupaciones de estos </comment>
+		<register>
+			<comment> Define las características de un registro </comment>
+			<name>'AX'</name>
+			<use>"AllPurpose"</use>
+			<bitSize>8</bitSize>
+			<comment> el codigo de registro es opcional </comment>
+			<regbitcode>001b</regbitcode>
+		</register>
+		<group>
+			<comment> Define las características de un registro </comment>
+			<name>'BX'</name>
+			<use>"AllPurpose"</use>
+			<bitSize>8</bitSize>
+			<comment> el codigo de registro es opcional </comment>
+			<regbitcode>001b</regbitcode>
+			<registers>'BH','BL'</registers>
+		</group>
+	</storage>
+	<insns>
+		<opcode>ADD</opcode>
+		<comment> In es opcional </comment>
+		<in>[A,BC], [A,B], [A,C], [A,DATA]</in>
+		<comment> opcional tambien </comment>
+		<out>[A]</out>
+		<insbitcode>001xxyzz</insbitcode>
+		<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
+	</insns>
+<upd>

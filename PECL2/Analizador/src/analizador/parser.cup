@@ -1,0 +1,42 @@
+package analizador;
+import java_cup.runtime.*;
+import java.io.*;
+
+/*User code*/
+action code{:
+	public void ImprimeValor(String str){
+		System.out.println("el valor del token"+str) ; 
+	}
+:}
+
+/* Preliminaries to set up and use the scanner.  */
+// init with {: scanner.init();              :};
+// scan with {: return scanner.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal            ADESCR, CDESCR, AIDENT, IDENT, CIDENT, ADATE, DATE, CDATE;
+
+
+/* Non terminals */
+non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
+
+
+/* Precedences */
+// precedence left PLUS, MINUS;
+
+
+/* The grammar */
+especificacion ::= |bloque_descripcion;
+
+bloque_descripcion ::= ADESCR identificacion fecha CDESCR
+					| error CDESCR
+					;
+
+identificacion ::= AIDENT IDENT CIDENT
+				| error CIDENT {:System.out.println("ident expected");:}
+				| error CDESCR {:System.out.println("</ident> expected");:}
+				;
+
+fecha ::= |ADATE DATE CDATE
+		| error CDATE
+		;
