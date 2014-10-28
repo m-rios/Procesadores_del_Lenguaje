@@ -9,6 +9,26 @@ action code{:
 	}
 :}
 
+parser code {:
+	public void report_error(String message, Object info) {
+       	StringBuffer m = new StringBuffer("Error");
+		System.out.println("Mensaje: "+message);
+		System.out.println("info: "+info.toString());
+		if(info instanceof java_cup.runtime.Symbol) {
+			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
+			/* Comprueba si el numero de línea es mayor o igual que cero */
+			if(s.left >= 0) {
+				m.append(" en linea "+(s.left+1));
+				/*Comprueba si el numero de columna es mayoro igual que cero */
+				if (s.right >= 0)
+					m.append(", y columna "+(s.right+1));
+			}
+		}
+		m.append(" : "+message);
+		System.err.println(m);
+    }
+:}
+
 /* Preliminaries to set up and use the scanner.  */
 // init with {: scanner.init();              :};
 // scan with {: return scanner.next_token(); :};
@@ -20,19 +40,26 @@ terminal 			AUSE, USE, CUSE, ABITSIZE, BITSIZE, CBITSIZE, AREGBITCODE;
 terminal 			REGBITCODE, CREGBITCODE, AGROUP, AREGISTERS, CREGISTERS;
 terminal 			CGROUP, AUPD, CUPD, COMA;
 
+terminal 			AINSNS, CINSNS, AOPCODE, OPCODE, COPCODE, AINSBITCODE;
+terminal 			CINSBITCODE, INSBITCODE, ABEHAV, CBEHAV, CIN, COUT, AOUT;
+terminal 			IN, OUT, BEHAV, AIN;
+
 /* Non terminals */
 non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
 
 non terminal 		bloque_almacenamiento, almacenamiento, registro, grupo;
 non terminal 		contenido_registro, registros, regbitcode;
 
+non terminal 		bloque_instrucciones, instrucciones, instruccion, entrada;
+non terminal 		salida, behav, in, out;
 
 /* Precedences */
 // precedence left PLUS, MINUS;
 
 
 /* The grammar */
-especificacion ::= | AUPD bloque_descripcion bloque_almacenamiento CUPD;
+especificacion ::= | AUPD bloque_descripcion bloque_almacenamiento
+						bloque_instrucciones CUPD;
 
 
 /*gramatica bloque descripción*/
@@ -71,8 +98,31 @@ registros ::= registros COMA NAME
 			| NAME
 			;
 
+/*gramática bloque instrucciones*/
+bloque_instrucciones ::= AINSNS instrucciones CINSNS;
 
+instrucciones ::= instrucciones instruccion
+				| instruccion
+				;
 
+instruccion ::= AOPCODE OPCODE COPCODE entrada salida AINSBITCODE INSBITCODE
+				CINSBITCODE ABEHAV behav CBEHAV;
+
+entrada ::= | AIN in CIN;
+
+in ::= in COMA IN
+	| IN
+	;
+
+salida ::= |AOUT out COUT;
+
+out ::= out OUT
+	| OUT
+	;
+
+behav ::= behav COMA BEHAV
+		| BEHAV
+		;
 
 
 
