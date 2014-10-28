@@ -15,10 +15,16 @@ action code{:
 
 /* Terminals (tokens returned by the scanner). */
 terminal            ADESCR, CDESCR, AIDENT, IDENT, CIDENT, ADATE, DATE, CDATE;
-
+terminal 			ASTORAGE, CSTORAGE, AREGISTER, CREGISTER, ANAME, NAME, CNAME;
+terminal 			AUSE, USE, CUSE, ABITSIZE, BITSIZE, CBITSIZE, AREGBITCODE;
+terminal 			REGBITCODE, CREGBITCODE, AGROUP, AREGISTERS, CREGISTERS;
+terminal 			CGROUP, AUPD, CUPD, COMA;
 
 /* Non terminals */
 non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
+
+non terminal 		bloque_almacenamiento, almacenamiento, registro, grupo;
+non terminal 		contenido_registro, registros, regbitcode;
 
 
 /* Precedences */
@@ -26,17 +32,59 @@ non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
 
 
 /* The grammar */
-especificacion ::= |bloque_descripcion;
+especificacion ::= | AUPD bloque_descripcion bloque_almacenamiento CUPD;
 
+
+/*gramatica bloque descripción*/
 bloque_descripcion ::= ADESCR identificacion fecha CDESCR
 					| error CDESCR
 					;
 
 identificacion ::= AIDENT IDENT CIDENT
-				| error CIDENT {:System.out.println("ident expected");:}
+				| error CIDENT  {:System.out.println("identifier expected");:}
 				| error CDESCR {:System.out.println("</ident> expected");:}
 				;
 
 fecha ::= |ADATE DATE CDATE
 		| error CDATE
 		;
+
+/*gramática bloque almacenamiento*/
+bloque_almacenamiento ::= ASTORAGE almacenamiento CSTORAGE;
+
+almacenamiento ::= almacenamiento registro
+				| almacenamiento grupo
+				| registro
+				| grupo
+				;
+
+registro ::= AREGISTER contenido_registro CREGISTER;
+
+contenido_registro ::= ANAME NAME CNAME AUSE USE CUSE ABITSIZE BITSIZE CBITSIZE
+					regbitcode;
+
+regbitcode ::= |AREGBITCODE REGBITCODE CREGBITCODE;
+
+grupo ::= AGROUP contenido_registro AREGISTERS registros CREGISTERS CGROUP;
+
+registros ::= registros COMA NAME
+			| NAME
+			;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
