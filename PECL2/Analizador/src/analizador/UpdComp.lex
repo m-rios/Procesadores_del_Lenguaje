@@ -13,7 +13,7 @@ import java_cup.runtime.Symbol;
 white = [\r\t\n" "]
 letra = [a-zA-Z]
 dig = [0-9]
-ident = {letra}[^\n\r\t \""<'[]"]*
+ident = {letra}[^\n\r\t \"<']*
 date = {dig}{dig}"/"{dig}{dig}"/"{dig}{dig}{dig}{dig}
 name = "'"{letra}{letra}?"'"
 bitMask = [0-1]+(x+(yz*)*)*
@@ -22,14 +22,9 @@ regbitcode = [0-1]+b
 marca = (ident|date|name|use|bitSize|insBitCode)
 aEtiqueta = "<"{marca}">"
 cEtiqueta = "</"{marca}">"
-opcode = [A-Z]+
-in = \[(DATA|MEM|{letra}{letra}?)","*(DATA|MEM|{letra}{letra}?)\]
-out = \[{letra}{letra}?\]
-behav = "["[^\n]"]"
 
 %unicode
 %line
-%char
 %state comment
 %class scanner
 
@@ -41,44 +36,39 @@ behav = "["[^\n]"]"
 <comment> . {/*ignorar*/}
 <comment> "</comment>" 		{ yybegin(YYINITIAL);}
 
-<YYINITIAL> "<descr>" 		{ return new Symbol(sym.ADESCR, yyline, yychar);}
-<YYINITIAL> "</descr>" 		{ return new Symbol(sym.CDESCR, yyline, yychar);}
-<YYINITIAL> "<ident>" 		{ return new Symbol(sym.AIDENT, yyline, yychar);}
-<YYINITIAL> "</ident>" 		{ return new Symbol(sym.CIDENT, yyline, yychar);}
-<YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE, yyline, yychar);}
-<YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE, yyline, yychar);}
+<YYINITIAL> "<descr>" 		{ return new Symbol(sym.ADESCR);}
+<YYINITIAL> "</descr>" 		{ return new Symbol(sym.CDESCR);}
+<YYINITIAL> "<ident>" 		{ return new Symbol(sym.AIDENT);}
+<YYINITIAL> "</ident>" 		{ return new Symbol(sym.CIDENT);}
+<YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE);}
+<YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE);}
 
-<YYINITIAL> {ident} 		{ System.out.println("text: "+yytext()+ " at line "+(int)(yyline+1));
-	return new Symbol(sym.TEXT,yyline, yychar);
-							}
-<YYINITIAL> {date}  		{ return new Symbol(sym.DATE, yyline, yychar);}
+<YYINITIAL> {ident} 		{ return new Symbol(sym.IDENT);}
+<YYINITIAL> {date}  		{ return new Symbol(sym.DATE);}
 
-<YYINITIAL> "<storage>"		{ return new Symbol(sym.ASTORAGE, yyline, yychar);}
-<YYINITIAL> "</storage>"	{ return new Symbol(sym.CSTORAGE, yyline, yychar);}
-<YYINITIAL>	"<register>"	{ return new Symbol(sym.AREGISTER, yyline, yychar);}
-<YYINITIAL>	"</register>"	{ return new Symbol(sym.CREGISTER, yyline, yychar);}
-<YYINITIAL>	"<name>"		{ return new Symbol(sym.ANAME, yyline, yychar);}
-<YYINITIAL> {name}			{ return new Symbol(sym.NAME, yyline, yychar);}
-<YYINITIAL> "</name>"		{ return new Symbol(sym.CNAME, yyline, yychar);}
-<YYINITIAL> "<use>"			{ return new Symbol(sym.AUSE, yyline, yychar);}
-<YYINITIAL> {use}			{ return new Symbol(sym.USE, yyline, yychar);}
-<YYINITIAL> "</use>"		{ return new Symbol(sym.CUSE, yyline, yychar);}
-<YYINITIAL> "<bitSize>"		{ return new Symbol(sym.ABITSIZE, yyline, yychar);}
-<YYINITIAL> [1-9][0-9]*		{ return new Symbol(sym.BITSIZE, yyline, yychar);}
-<YYINITIAL> "</bitSize>"	{ return new Symbol(sym.CBITSIZE, yyline, yychar);}
-<YYINITIAL> "<regbitcode>"	{ return new Symbol(sym.AREGBITCODE, yyline, yychar);}
-<YYINITIAL> {regbitcode}	{ return new Symbol(sym.REGBITCODE, yyline, yychar);}
-<YYINITIAL>	"</regbitcode>"	{ return new Symbol(sym.CREGBITCODE, yyline, yychar);}
-<YYINITIAL> "<group>"		{ return new Symbol(sym.AGROUP, yyline, yychar);}
-<YYINITIAL> "<registers>"	{ return new Symbol(sym.AREGISTERS, yyline, yychar);}
-<YYINITIAL> "</registers>"	{ return new Symbol(sym.CREGISTERS, yyline, yychar);}
-<YYINITIAL> "</group>"		{ return new Symbol(sym.CGROUP, yyline, yychar);}
-<YYINITIAL> "<upd>"			{ System.out.println("bitch!");return new Symbol(sym.AUPD, yyline, yychar);}
-<YYINITIAL> "</upd>"		{ return new Symbol(sym.CUPD, yyline, yychar);}
-<YYINITIAL> ","				{ return new Symbol(sym.COMA, yyline, yychar);}
-
-
-
+<YYINITIAL> "<storage>"		{ return new Symbol(sym.ASTORAGE);}
+<YYINITIAL> "</storage>"	{ return new Symbol(sym.CSTORAGE);}
+<YYINITIAL>	"<register>"	{ return new Symbol(sym.AREGISTER);}
+<YYINITIAL>	"</register>"	{ return new Symbol(sym.CREGISTER);}
+<YYINITIAL>	"<name>"		{ return new Symbol(sym.ANAME);}
+<YYINITIAL> {name}			{ return new Symbol(sym.NAME);}
+<YYINITIAL> "</name>"		{ return new Symbol(sym.CNAME);}
+<YYINITIAL> "<use>"			{ return new Symbol(sym.AUSE);}
+<YYINITIAL> {use}			{ return new Symbol(sym.USE);}
+<YYINITIAL> "</use>"		{ return new Symbol(sym.CUSE);}
+<YYINITIAL> "<bitSize>"		{ return new Symbol(sym.ABITSIZE);}
+<YYINITIAL> [1-9][0-9]*		{ return new Symbol(sym.BITSIZE);}
+<YYINITIAL> "</bitSize>"	{ return new Symbol(sym.CBITSIZE);}
+<YYINITIAL> "<regbitcode>"	{ return new Symbol(sym.AREGBITCODE);}
+<YYINITIAL> {regbitcode}	{ return new Symbol(sym.REGBITCODE);}
+<YYINITIAL>	"</regbitcode>"	{ return new Symbol(sym.CREGBITCODE);}
+<YYINITIAL> "<group>"		{ return new Symbol(sym.AGROUP);}
+<YYINITIAL> "<registers>"	{ return new Symbol(sym.AREGISTERS);}
+<YYINITIAL> "</registers>"	{ return new Symbol(sym.CREGISTERS);}
+<YYINITIAL> "</group>"		{ return new Symbol(sym.CGROUP);}
+<YYINITIAL> "<upd>"			{ return new Symbol(sym.AUPD);}
+<YYINITIAL> "</upd>"		{ return new Symbol(sym.CUPD);}
+<YYINITIAL> ","				{ return new Symbol(sym.COMA);}
 
 {white}         { /*ignorar*/ }
 .               { printError("caracter "+yytext()+" no reconocido"); }
