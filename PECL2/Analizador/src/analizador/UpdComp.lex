@@ -29,9 +29,8 @@ behav = "["[^\n]"]"
 
 %unicode
 %line
-%char
 %state comment
-%class scanner
+%class UpdComp
 
 %cup
 
@@ -41,39 +40,39 @@ behav = "["[^\n]"]"
 <comment> . {/*ignorar*/}
 <comment> "</comment>" 		{ yybegin(YYINITIAL);}
 
-<YYINITIAL> "<descr>" 		{ return new Symbol(sym.ADESCR, yyline, yychar);}
-<YYINITIAL> "</descr>" 		{ return new Symbol(sym.CDESCR, yyline, yychar);}
-<YYINITIAL> "<ident>" 		{ return new Symbol(sym.AIDENT, yyline, yychar);}
-<YYINITIAL> "</ident>" 		{ return new Symbol(sym.CIDENT, yyline, yychar);}
-<YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE, yyline, yychar);}
-<YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE, yyline, yychar);}
+<YYINITIAL> "<descr>" 		{ return new Symbol(sym.ADESCR, yyline, yyline);}
+<YYINITIAL> "</descr>" 		{ return new Symbol(sym.CDESCR, yyline, yyline);}
+<YYINITIAL> "<ident>" 		{ return new Symbol(sym.AIDENT, yyline, yyline);}
+<YYINITIAL> "</ident>" 		{ return new Symbol(sym.CIDENT, yyline, yyline);}
+<YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE, yyline, yyline);}
+<YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE, yyline, yyline);}
 
-<YYINITIAL> {ident} 		{ return new Symbol(sym.TEXT,yyline, yychar);}
-<YYINITIAL> {date}  		{ return new Symbol(sym.DATE, yyline, yychar);}
+<YYINITIAL> {ident} 		{ return new Symbol(sym.TEXT,yyline);}
+<YYINITIAL> {date}  		{ return new Symbol(sym.DATE, yyline, yyline);}
 
-<YYINITIAL> "<storage>"		{ return new Symbol(sym.ASTORAGE, yyline, yychar);}
-<YYINITIAL> "</storage>"	{ return new Symbol(sym.CSTORAGE, yyline, yychar);}
-<YYINITIAL>	"<register>"	{ return new Symbol(sym.AREGISTER, yyline, yychar);}
-<YYINITIAL>	"</register>"	{ return new Symbol(sym.CREGISTER, yyline, yychar);}
-<YYINITIAL>	"<name>"		{ return new Symbol(sym.ANAME, yyline, yychar);}
-<YYINITIAL> {name}			{ return new Symbol(sym.NAME, yyline, yychar);}
-<YYINITIAL> "</name>"		{ return new Symbol(sym.CNAME, yyline, yychar);}
-<YYINITIAL> "<use>"			{ return new Symbol(sym.AUSE, yyline, yychar);}
-<YYINITIAL> {use}			{ return new Symbol(sym.USE, yyline, yychar);}
-<YYINITIAL> "</use>"		{ return new Symbol(sym.CUSE, yyline, yychar);}
-<YYINITIAL> "<bitSize>"		{ return new Symbol(sym.ABITSIZE, yyline, yychar);}
-<YYINITIAL> [1-9][0-9]*		{ return new Symbol(sym.BITSIZE, yyline, yychar);}
-<YYINITIAL> "</bitSize>"	{ return new Symbol(sym.CBITSIZE, yyline, yychar);}
-<YYINITIAL> "<regbitcode>"	{ return new Symbol(sym.AREGBITCODE, yyline, yychar);}
-<YYINITIAL> {regbitcode}	{ return new Symbol(sym.REGBITCODE, yyline, yychar);}
-<YYINITIAL>	"</regbitcode>"	{ return new Symbol(sym.CREGBITCODE, yyline, yychar);}
-<YYINITIAL> "<group>"		{ return new Symbol(sym.AGROUP, yyline, yychar);}
-<YYINITIAL> "<registers>"	{ return new Symbol(sym.AREGISTERS, yyline, yychar);}
-<YYINITIAL> "</registers>"	{ return new Symbol(sym.CREGISTERS, yyline, yychar);}
-<YYINITIAL> "</group>"		{ return new Symbol(sym.CGROUP, yyline, yychar);}
-<YYINITIAL> "<upd>"			{ return new Symbol(sym.AUPD, yyline, yychar);}
-<YYINITIAL> "</upd>"		{ return new Symbol(sym.CUPD, yyline, yychar);}
-<YYINITIAL> ","				{ return new Symbol(sym.COMA, yyline, yychar);}
+<YYINITIAL> "<storage>"		{ return new Symbol(sym.ASTORAGE, yyline, yyline);}
+<YYINITIAL> "</storage>"	{ return new Symbol(sym.CSTORAGE, yyline, yyline);}
+<YYINITIAL>	"<register>"	{ return new Symbol(sym.AREGISTER, yyline, yyline);}
+<YYINITIAL>	"</register>"	{ return new Symbol(sym.CREGISTER, yyline, yyline);}
+<YYINITIAL>	"<name>"		{ return new Symbol(sym.ANAME, yyline, yyline);}
+<YYINITIAL> {name}			{ return new Symbol(sym.NAME, yyline, yyline);}
+<YYINITIAL> "</name>"		{ return new Symbol(sym.CNAME, yyline, yyline);}
+<YYINITIAL> "<use>"			{ return new Symbol(sym.AUSE, yyline, yyline);}
+<YYINITIAL> {use}			{ return new Symbol(sym.USE, yyline, yyline);}
+<YYINITIAL> "</use>"		{ return new Symbol(sym.CUSE, yyline, yyline);}
+<YYINITIAL> "<bitSize>"		{ return new Symbol(sym.ABITSIZE, yyline, yyline);}
+<YYINITIAL> [1-9][0-9]*		{ return new Symbol(sym.BITSIZE, yyline, yyline);}
+<YYINITIAL> "</bitSize>"	{ return new Symbol(sym.CBITSIZE, yyline, yyline);}
+<YYINITIAL> "<regbitcode>"	{ return new Symbol(sym.AREGBITCODE, yyline, yyline);}
+<YYINITIAL> {regbitcode}	{ return new Symbol(sym.REGBITCODE, yyline, yyline);}
+<YYINITIAL>	"</regbitcode>"	{ return new Symbol(sym.CREGBITCODE, yyline, yyline);}
+<YYINITIAL> "<group>"		{ return new Symbol(sym.AGROUP, yyline, yyline);}
+<YYINITIAL> "<registers>"	{ return new Symbol(sym.AREGISTERS, yyline, yyline);}
+<YYINITIAL> "</registers>"	{ return new Symbol(sym.CREGISTERS, yyline, yyline);}
+<YYINITIAL> "</group>"		{ return new Symbol(sym.CGROUP, yyline, yyline);}
+<YYINITIAL> "<upd>"			{ return new Symbol(sym.AUPD, yyline, yyline);}
+<YYINITIAL> "</upd>"		{ return new Symbol(sym.CUPD, yyline, yyline);}
+<YYINITIAL> ","				{ return new Symbol(sym.COMA, yyline, yyline);}
 
 
 

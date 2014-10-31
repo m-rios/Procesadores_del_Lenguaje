@@ -16,8 +16,6 @@ parser code {:
 			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
 			if(s.left >= 0) {
 				m.append(" en linea "+(s.left+1));
-				if (s.right >= 0)
-					m.append(", y columna "+(s.right+1));
 			}
 		}
 		m.append(" : "+message);
