@@ -3,10 +3,30 @@ import java_cup.runtime.*;
 import java.io.*;
 
 /*User code*/
-action code{:
-	public void ImprimeValor(String str){
-		System.out.println("el valor del token"+str) ; 
+
+parser code {:
+	public void syntax_error(Symbol cur_token){
+		report_error("Syntax error", cur_token);
 	}
+	public void report_error(String message, Object info) {
+       	StringBuffer m = new StringBuffer("Error");
+		System.out.println("Mensaje: "+message);
+		System.out.println("info: "+info.toString());
+		if(info instanceof java_cup.runtime.Symbol) {
+			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
+			if(s.left >= 0) {
+				m.append(" en linea "+(s.left+1));
+				if (s.right >= 0)
+					m.append(", y columna "+(s.right+1));
+			}
+		}
+		m.append(" : "+message);
+		System.err.println(m);
+    }
+    public void report_fatal_error(String message, Object info) {
+       	report_error(message, info);
+		System.exit(1);
+    }
 :}
 
 /* Preliminaries to set up and use the scanner.  */
@@ -14,40 +34,42 @@ action code{:
 // scan with {: return scanner.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            ADESCR, CDESCR, AIDENT, IDENT, CIDENT, ADATE, DATE, CDATE;
+terminal            ADESCR, CDESCR, AIDENT, TEXT, CIDENT, ADATE, DATE, CDATE;
 terminal 			ASTORAGE, CSTORAGE, AREGISTER, CREGISTER, ANAME, NAME, CNAME;
 terminal 			AUSE, USE, CUSE, ABITSIZE, BITSIZE, CBITSIZE, AREGBITCODE;
 terminal 			REGBITCODE, CREGBITCODE, AGROUP, AREGISTERS, CREGISTERS;
 terminal 			CGROUP, AUPD, CUPD, COMA;
+/*
+terminal 			AINSNS, CINSNS, AOPCODE, COPCODE, AINSBITCODE;
+terminal 			CINSBITCODE, INSBITCODE, ABEHAV, CBEHAV, CIN, COUT, AOUT;
+terminal 			IN, OUT, BEHAV, AIN;
+terminal 			ACORCHETE, CCORCHETE;
+terminal 			COMILLA, COMILLAS; //comilla -> simple comillas -> doble
 
 /* Non terminals */
 non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
 
 non terminal 		bloque_almacenamiento, almacenamiento, registro, grupo;
 non terminal 		contenido_registro, registros, regbitcode;
-
+/*
+non terminal 		bloque_instrucciones, instrucciones, instruccion, entrada;
+non terminal 		salida, behav, in, out;
 
 /* Precedences */
 // precedence left PLUS, MINUS;
 
 
 /* The grammar */
-especificacion ::= | AUPD bloque_descripcion bloque_almacenamiento CUPD;
-
+especificacion ::= 	|AUPD bloque_descripcion bloque_almacenamiento CUPD;
 
 /*gramatica bloque descripción*/
 bloque_descripcion ::= ADESCR identificacion fecha CDESCR
-					| error CDESCR
+					| error 
 					;
 
-identificacion ::= AIDENT IDENT CIDENT
-				| error CIDENT  {:System.out.println("identifier expected");:}
-				| error CDESCR {:System.out.println("</ident> expected");:}
-				;
+identificacion ::= AIDENT TEXT CIDENT;
 
-fecha ::= |ADATE DATE CDATE
-		| error CDATE
-		;
+fecha ::= |ADATE DATE CDATE;
 
 /*gramática bloque almacenamiento*/
 bloque_almacenamiento ::= ASTORAGE almacenamiento CSTORAGE;
@@ -56,6 +78,7 @@ almacenamiento ::= almacenamiento registro
 				| almacenamiento grupo
 				| registro
 				| grupo
+				| error
 				;
 
 registro ::= AREGISTER contenido_registro CREGISTER;
@@ -71,10 +94,33 @@ registros ::= registros COMA NAME
 			| NAME
 			;
 
+/*gramática bloque instrucciones
+bloque_instrucciones ::= AINSNS instrucciones CINSNS;
 
+instrucciones ::= instrucciones instruccion
+				| instruccion
+				;
 
+instruccion ::= AOPCODE TEXT COPCODE entrada salida AINSBITCODE INSBITCODE
+				CINSBITCODE ABEHAV behav CBEHAV;
 
+entrada ::= | AIN in CIN;
 
+in ::= in COMA IN
+	| IN
+	;
+
+salida ::= |AOUT out COUT;
+
+out ::= out OUT
+	| OUT
+	;
+
+behav ::= behav COMA ACORCHETE TEXT CCORCHETE;
+		| TEXT
+		;
+
+*/
 
 
 
