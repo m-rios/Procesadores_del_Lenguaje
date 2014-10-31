@@ -4,7 +4,7 @@
 		que se describe </comment>
 		<ident>X8086</ident>
 		<comment> La fecha es opcional</comment>
-		<date>31/01/197</date>
+		<date>31/01/1978</date>
 	</descr>
 	<storage>
 		<comment> Define los componentes de almacenamiento del microprocesador,

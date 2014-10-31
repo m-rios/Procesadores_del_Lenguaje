@@ -10,8 +10,6 @@ parser code {:
 	}
 	public void report_error(String message, Object info) {
        	StringBuffer m = new StringBuffer("Error");
-		System.out.println("Mensaje: "+message);
-		System.out.println("info: "+info.toString());
 		if(info instanceof java_cup.runtime.Symbol) {
 			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
 			if(s.left >= 0) {
@@ -32,11 +30,15 @@ parser code {:
 // scan with {: return scanner.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            ADESCR, CDESCR, AIDENT, TEXT, CIDENT, ADATE, DATE, CDATE;
-terminal 			ASTORAGE, CSTORAGE, AREGISTER, CREGISTER, ANAME, NAME, CNAME;
-terminal 			AUSE, USE, CUSE, ABITSIZE, BITSIZE, CBITSIZE, AREGBITCODE;
-terminal 			REGBITCODE, CREGBITCODE, AGROUP, AREGISTERS, CREGISTERS;
+terminal            ADESCR, CDESCR, AIDENT, CIDENT, ADATE, CDATE;
+terminal 			ASTORAGE, CSTORAGE, AREGISTER, CREGISTER, ANAME, CNAME;
+terminal 			AUSE, CUSE, ABITSIZE, CBITSIZE, AREGBITCODE;
+terminal 			CREGBITCODE, AGROUP, AREGISTERS, CREGISTERS;
 terminal 			CGROUP, AUPD, CUPD, COMA;
+
+terminal String 	TEXT, DATE, NAME, USE, REGBITCODE;
+terminal int 		BITSIZE;
+
 /*
 terminal 			AINSNS, CINSNS, AOPCODE, COPCODE, AINSBITCODE;
 terminal 			CINSBITCODE, INSBITCODE, ABEHAV, CBEHAV, CIN, COUT, AOUT;
@@ -65,7 +67,9 @@ bloque_descripcion ::= ADESCR identificacion fecha CDESCR
 					| error 
 					;
 
-identificacion ::= AIDENT TEXT CIDENT;
+identificacion ::= AIDENT TEXT CIDENT
+					| error 
+					;
 
 fecha ::= |ADATE DATE CDATE;
 
