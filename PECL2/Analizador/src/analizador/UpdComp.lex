@@ -48,9 +48,7 @@ behav = "["[^\n]"]"
 <YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE, yyline, yychar);}
 <YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE, yyline, yychar);}
 
-<YYINITIAL> {ident} 		{ System.out.println("text: "+yytext()+ " at line "+(int)(yyline+1));
-	return new Symbol(sym.TEXT,yyline, yychar);
-							}
+<YYINITIAL> {ident} 		{ return new Symbol(sym.TEXT,yyline, yychar);}
 <YYINITIAL> {date}  		{ return new Symbol(sym.DATE, yyline, yychar);}
 
 <YYINITIAL> "<storage>"		{ return new Symbol(sym.ASTORAGE, yyline, yychar);}
@@ -73,7 +71,7 @@ behav = "["[^\n]"]"
 <YYINITIAL> "<registers>"	{ return new Symbol(sym.AREGISTERS, yyline, yychar);}
 <YYINITIAL> "</registers>"	{ return new Symbol(sym.CREGISTERS, yyline, yychar);}
 <YYINITIAL> "</group>"		{ return new Symbol(sym.CGROUP, yyline, yychar);}
-<YYINITIAL> "<upd>"			{ System.out.println("bitch!");return new Symbol(sym.AUPD, yyline, yychar);}
+<YYINITIAL> "<upd>"			{ return new Symbol(sym.AUPD, yyline, yychar);}
 <YYINITIAL> "</upd>"		{ return new Symbol(sym.CUPD, yyline, yychar);}
 <YYINITIAL> ","				{ return new Symbol(sym.COMA, yyline, yychar);}
 
