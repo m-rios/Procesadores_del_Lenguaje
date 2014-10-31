@@ -23,8 +23,8 @@ marca = (ident|date|name|use|bitSize|insBitCode)
 aEtiqueta = "<"{marca}">"
 cEtiqueta = "</"{marca}">"
 opcode = [A-Z]+
-in = \[(DATA|MEM|{letra}{letra}?)","*(DATA|MEM|{letra}{letra}?)\]
-out = \[{letra}{letra}?\]
+in = {out}|DATA|MEM
+out = {letra}{letra}?
 behav = "["[^\n]"]"
 
 %unicode
@@ -47,7 +47,7 @@ behav = "["[^\n]"]"
 <YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE, yyline, yyline);}
 <YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE, yyline, yyline);}
 
-<YYINITIAL> {ident} 		{ return new Symbol(sym.TEXT,yyline);}
+<YYINITIAL> {ident} 		{ return new Symbol(sym.TEXT,yyline, yyline, yytext());}
 <YYINITIAL> {date}  		{ return new Symbol(sym.DATE, yyline, yyline);}
 
 <YYINITIAL> "<storage>"		{ return new Symbol(sym.ASTORAGE, yyline, yyline);}
@@ -74,7 +74,24 @@ behav = "["[^\n]"]"
 <YYINITIAL> "</upd>"		{ return new Symbol(sym.CUPD, yyline, yyline);}
 <YYINITIAL> ","				{ return new Symbol(sym.COMA, yyline, yyline);}
 
-
+<YYINITIAL> "<insns>"		{ return new Symbol(sym.AINSNS, yyline, yyline);}
+<YYINITIAL> "</insns>"		{ return new Symbol(sym.CINSNS, yyline, yyline);}
+<YYINITIAL> "<opcode>"		{ return new Symbol(sym.AOPCODE, yyline, yyline);}
+<YYINITIAL> {opcode}		{ return new Symbol(sym.OPCODE, yyline, yyline);}
+<YYINITIAL> "</opcode>"		{ return new Symbol(sym.COPCODE, yyline, yyline);}
+<YYINITIAL> "<insbitcode>"	{ return new Symbol(sym.AINSBITCODE, yyline, yyline);}
+<YYINITIAL> "</insbitcode>"	{ return new Symbol(sym.CINSBITCODE, yyline, yyline);}
+<YYINITIAL> {bitMask}		{ return new Symbol(sym.INSBITCODE, yyline, yyline);}
+<YYINITIAL> "<behav>"		{ return new Symbol(sym.ABEHAV, yyline, yyline);}
+<YYINITIAL> "</behav>"		{ return new Symbol(sym.CBEHAV, yyline, yyline);}
+<YYINITIAL> "<in>"			{ return new Symbol(sym.AIN, yyline, yyline);}
+<YYINITIAL> "</in>"			{ return new Symbol(sym.CIN, yyline, yyline);}
+<YYINITIAL> "<out>"			{ return new Symbol(sym.AOUT, yyline, yyline);}
+<YYINITIAL> "</out>"		{ return new Symbol(sym.COUT, yyline, yyline);}
+<YYINITIAL> "["				{ return new Symbol(sym.ACORCHETE, yyline, yyline);}
+<YYINITIAL> "]"				{ return new Symbol(sym.CCORCHETE, yyline, yyline);}
+<YYINITIAL> \"				{ return new Symbol(sym.COMILLAS, yyline, yyline);}
+<YYINITIAL> \'				{ return new Symbol(sym.COMILLA, yyline, yyline);}
 
 
 {white}         { /*ignorar*/ }

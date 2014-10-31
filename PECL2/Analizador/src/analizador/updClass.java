@@ -80,7 +80,7 @@ public class updClass {
         numBits += n;
     }
 
-    public Boolean putReg(String k, String v) {
+    public Boolean putReg(String k, storeClass v) {
         if (Regs.containsKey(k)) {
             return false;
         } else {

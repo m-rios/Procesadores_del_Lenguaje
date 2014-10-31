@@ -37,7 +37,9 @@ public class Analizador {
         }
         // while (yy.next_token() != null) ;
         parser parser = new parser(scanner);
+        parser.initData();
         parser.parse();
+        parser.printData();
     }
 
 }

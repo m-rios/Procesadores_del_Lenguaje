@@ -23,6 +23,22 @@ parser code {:
        	report_error(message, info);
 		System.exit(1);
     }
+    private updClass upd;
+    public void initData(){
+		this.upd = new updClass();
+	}
+	public void printData(){
+		upd.toString();
+	}
+:}
+
+action code{:
+
+private updClass upd = new updClass();
+public void printData(){
+	upd.toString();
+}
+
 :}
 
 /* Preliminaries to set up and use the scanner.  */
@@ -39,7 +55,7 @@ terminal 			CGROUP, AUPD, CUPD, COMA;
 terminal String 	TEXT, DATE, NAME, USE, REGBITCODE;
 terminal int 		BITSIZE;
 
-/*
+
 terminal 			AINSNS, CINSNS, AOPCODE, COPCODE, AINSBITCODE;
 terminal 			CINSBITCODE, INSBITCODE, ABEHAV, CBEHAV, CIN, COUT, AOUT;
 terminal 			IN, OUT, BEHAV, AIN;
@@ -50,37 +66,39 @@ terminal 			COMILLA, COMILLAS; //comilla -> simple comillas -> doble
 non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
 
 non terminal 		bloque_almacenamiento, almacenamiento, registro, grupo;
-non terminal 		contenido_registro, registros, regbitcode;
-/*
+non terminal 		contenido_registro, registros, registros_aux, regbitcode;
+
 non terminal 		bloque_instrucciones, instrucciones, instruccion, entrada;
-non terminal 		salida, behav, in, out;
+non terminal 		salida, behav, in, bloque_in;
 
 /* Precedences */
 // precedence left PLUS, MINUS;
 
 
 /* The grammar */
-especificacion ::= 	|AUPD bloque_descripcion bloque_almacenamiento CUPD;
+especificacion ::= 	|AUPD bloque_descripcion bloque_almacenamiento bloque_instrucciones CUPD;
 
 /*gramatica bloque descripción*/
 bloque_descripcion ::= ADESCR identificacion fecha CDESCR
 					| error 
 					;
 
-identificacion ::= AIDENT TEXT CIDENT
+identificacion ::= AIDENT TEXT CIDENT {:upd.setIdent(cur_token.value);:}
 					| error 
 					;
 
-fecha ::= |ADATE DATE CDATE;
+fecha ::= |ADATE DATE CDATE
+			| error;
 
 /*gramática bloque almacenamiento*/
-bloque_almacenamiento ::= ASTORAGE almacenamiento CSTORAGE;
+bloque_almacenamiento ::= ASTORAGE almacenamiento CSTORAGE 
+							| error 
+							;
 
 almacenamiento ::= almacenamiento registro
 				| almacenamiento grupo
 				| registro
 				| grupo
-				| error
 				;
 
 registro ::= AREGISTER contenido_registro CREGISTER;
@@ -92,47 +110,37 @@ regbitcode ::= |AREGBITCODE REGBITCODE CREGBITCODE;
 
 grupo ::= AGROUP contenido_registro AREGISTERS registros CREGISTERS CGROUP;
 
-registros ::= registros COMA NAME
-			| NAME
-			;
+registros ::=  registros_aux NAME;
+registros_aux ::= registros_aux NAME COMA
+					| NAME COMA
+					;
 
-/*gramática bloque instrucciones
-bloque_instrucciones ::= AINSNS instrucciones CINSNS;
+/*gramática bloque instrucciones*/
+bloque_instrucciones ::= AINSNS instrucciones CINSNS
+						| error
+						;
 
 instrucciones ::= instrucciones instruccion
 				| instruccion
+				| error
 				;
 
 instruccion ::= AOPCODE TEXT COPCODE entrada salida AINSBITCODE INSBITCODE
 				CINSBITCODE ABEHAV behav CBEHAV;
 
-entrada ::= | AIN in CIN;
+entrada ::= | AIN bloque_in CIN
+			| error
+			;
 
-in ::= in COMA IN
-	| IN
-	;
-
-salida ::= |AOUT out COUT;
-
-out ::= out OUT
-	| OUT
-	;
-
-behav ::= behav COMA ACORCHETE TEXT CCORCHETE;
+bloque_in ::= bloque_in COMA ACORCHETE in CCORCHETE
+				| ACORCHETE in CCORCHETE
+				;
+in ::= in COMA TEXT
 		| TEXT
 		;
 
-*/
+salida ::= |AOUT ACORCHETE TEXT CCORCHETE COUT;
 
-
-
-
-
-
-
-
-
-
-
-
-
+behav ::= behav COMA ACORCHETE TEXT CCORCHETE
+		| ACORCHETE TEXT CCORCHETE
+		;
