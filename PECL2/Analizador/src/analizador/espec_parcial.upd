@@ -27,4 +27,13 @@
 			<registers>'BH','BL'</registers>
 		</group>
 	</storage>
-</upd>
+	<insns>
+		<opcode>ADD</opcode>
+		<comment> In es opcional </comment>
+		<in>[A,BC], [A,B], [A,C], [A,DATA]</in>
+		<comment> opcional tambien </comment>
+		<out>[A]</out>
+		<insbitcode>001xxyzz</insbitcode>
+		<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
+	</insns>
+<upd>
