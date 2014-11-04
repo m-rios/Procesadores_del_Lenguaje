@@ -9,14 +9,16 @@ parser code {:
 		report_error("Syntax error", cur_token);
 	}
 	public void report_error(String message, Object info) {
-       	StringBuffer m = new StringBuffer("Error");
+       	StringBuffer m = new StringBuffer(message);
+       	String token = "";
 		if(info instanceof java_cup.runtime.Symbol) {
 			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
 			if(s.left >= 0) {
 				m.append(" en linea "+(s.left+1));
 			}
+			token = (String) "'"+s.value+"'";
 		}
-		m.append(" : "+message);
+		m.append(": "+token);
 		System.err.println(m);
     }
     public void report_fatal_error(String message, Object info) {
@@ -29,6 +31,10 @@ parser code {:
 	}
 	public void printData(){
 		upd.toString();
+	}
+
+	public void muerecabron(){
+		System.out.println(this.cur_token);
 	}
 :}
 
@@ -58,9 +64,10 @@ terminal int 		BITSIZE;
 
 terminal 			AINSNS, CINSNS, AOPCODE, COPCODE, AINSBITCODE;
 terminal 			CINSBITCODE, INSBITCODE, ABEHAV, CBEHAV, CIN, COUT, AOUT;
-terminal 			IN, OUT, BEHAV, AIN;
-terminal 			ACORCHETE, CCORCHETE;
-terminal 			COMILLA, COMILLAS; //comilla -> simple comillas -> doble
+terminal 			ACORCHETE, CCORCHETE, AIN, IN;
+//terminal 			IN, OUT, COMILLA, COMILLAS; //comilla -> simple comillas -> doble
+
+
 
 /* Non terminals */
 non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
@@ -77,13 +84,14 @@ non terminal 		salida, behav, in, bloque_in;
 
 /* The grammar */
 especificacion ::= 	|AUPD bloque_descripcion bloque_almacenamiento bloque_instrucciones CUPD;
+//se acepta fichero vacío como válido
 
 /*gramatica bloque descripción*/
 bloque_descripcion ::= ADESCR identificacion fecha CDESCR
 					| error 
 					;
 
-identificacion ::= AIDENT TEXT CIDENT {:upd.setIdent(cur_token.value);:}
+identificacion ::= AIDENT TEXT CIDENT {:parser.muerecabron();:}
 					| error 
 					;
 
@@ -135,11 +143,11 @@ entrada ::= | AIN bloque_in CIN
 bloque_in ::= bloque_in COMA ACORCHETE in CCORCHETE
 				| ACORCHETE in CCORCHETE
 				;
-in ::= in COMA TEXT
-		| TEXT
+in ::= in COMA IN
+		| IN
 		;
 
-salida ::= |AOUT ACORCHETE TEXT CCORCHETE COUT;
+salida ::= |AOUT ACORCHETE IN CCORCHETE COUT;
 
 behav ::= behav COMA ACORCHETE TEXT CCORCHETE
 		| ACORCHETE TEXT CCORCHETE

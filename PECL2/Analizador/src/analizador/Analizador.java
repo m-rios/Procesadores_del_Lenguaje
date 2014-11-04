@@ -35,7 +35,6 @@ public class Analizador {
                 return;
             }
         }
-        // while (yy.next_token() != null) ;
         parser parser = new parser(scanner);
         parser.initData();
         parser.parse();
