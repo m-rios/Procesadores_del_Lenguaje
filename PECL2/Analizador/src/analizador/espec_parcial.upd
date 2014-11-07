@@ -20,10 +20,10 @@
 		<group>
 			<comment> Define las características de un registro </comment>
 			<name>'BX'</name>
-			<use>"AllPurpose"</use>
-			<bitSize>8</bitSize>
+			<use>"Index","Accumulator"</use>
+			<bitSize>16</bitSize>
 			<comment> el codigo de registro es opcional </comment>
-			<regbitcode>001b</regbitcode>
+			<regbitcode>0010b</regbitcode>
 			<registers>'BH','BL'</registers>
                 </group>
 	</storage>
@@ -35,6 +35,15 @@
                     <comment> opcional tambien </comment>
                     <out>['A']</out>
                     <insbitcode>001xxyzz</insbitcode>
+                    <behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
+                </ins>
+                <ins>
+                    <opcode>ADD</opcode>
+                    <comment> In es opcional </comment>
+                    <in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
+                    <comment> opcional tambien </comment>
+                    <out>['A']</out>
+                    <insbitcode>001xxyzz,001xxyzz</insbitcode>
                     <behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
                 </ins>
 	</insns>

@@ -2,6 +2,9 @@ package analizador;
 import java_cup.runtime.*;
 import java.io.*;
 import java.util.Stack;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /*User code*/
 
@@ -61,12 +64,14 @@ terminal 			AINS, CINS;
 /* Non terminals */
 non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
 
-non terminal 		bloque_almacenamiento, almacenamiento, registro, grupo;
-non terminal 		contenido_registro, registros, registros_aux, regbitcode;
+non terminal 		bloque_almacenamiento, registro, grupo;
 
 non terminal 		bloque_instrucciones, instruccion, entrada;
 non terminal 		salida, in, bloque_in;
-non terminal Stack	behav, insbitcode, instrucciones;
+non terminal Stack	behav, insbitcode, instrucciones, registros_aux, registros;
+non terminal Stack	use, almacenamiento;
+non terminal String	regbitcode;
+non terminal storeClass	contenido_registro;
 
 /* Precedences */
 // precedence left PLUS, MINUS;
@@ -82,7 +87,7 @@ especificacion ::= 	|AUPD bloque_descripcion:descr bloque_almacenamiento:store
 										"------------------------\n"+
 										"Almacenamiento:\n"+
 										"------------------------\n"+
-										// store+
+										store.toString()+
 										"------------------------\n"+
 										"Instrucciones:\n"+
 										"------------------------\n"+
@@ -101,35 +106,72 @@ identificacion ::= 	AIDENT TEXT:id CIDENT {:RESULT = id;:}
 					| error 
 					;
 
-fecha ::= 	|ADATE DATE:d CDATE {:RESULT = d;:}
+fecha ::= 	|ADATE DATE:d CDATE 
+					{:	
+					try{
+						DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+					    formatter.setLenient(false);
+					    formatter.parse(d);
+					    RESULT = d;
+					}catch(ParseException e) { 
+					    System.out.println("Warning: Date format incorrect");
+					    RESULT = "Date Wrong";
+					}
+					:}
 			| error
 			;
 
 /*gramática bloque almacenamiento*/
-bloque_almacenamiento ::= 	ASTORAGE almacenamiento CSTORAGE 
+bloque_almacenamiento ::= 	ASTORAGE almacenamiento:a CSTORAGE {:RESULT = a;:}
 							| error 
 							;
 
-almacenamiento ::=	almacenamiento registro
-					| almacenamiento grupo
-					| registro
-					| grupo
+almacenamiento ::=	almacenamiento:a registro:r {:	a.push(r);
+												RESULT = a;:}
+					| almacenamiento:a grupo:g {:	a.push(g);
+													RESULT = a;:}
+					| registro:r {:	Stack stack = new Stack();
+									stack.push(r);
+									RESULT = stack;:}
+					| grupo:g {:	Stack stack = new Stack();
+									stack.push(g);
+									RESULT = stack;:}
 					;
 
-registro ::= AREGISTER contenido_registro CREGISTER;
+registro ::= AREGISTER contenido_registro:c CREGISTER {:	c.setRegister();
+															RESULT = c;:};
 
-contenido_registro ::= 	ANAME NAME CNAME AUSE USE CUSE ABITSIZE BITSIZE CBITSIZE
-						regbitcode
+contenido_registro ::= 	ANAME NAME:n CNAME AUSE use:u CUSE ABITSIZE BITSIZE:b 
+						CBITSIZE regbitcode:r {:	
+								storeClass sc = new storeClass(n,u,b,r);
+								RESULT = sc;
+								:}
 						;
 
-regbitcode ::=	|AREGBITCODE REGBITCODE CREGBITCODE
+use ::=	use:us COMA USE:u {:	us.push(u);
+						RESULT = us;:}
+		| USE:u {:	Stack stack = new Stack();
+					stack.push(u);
+					RESULT = stack;:}
+		;
+
+regbitcode ::=	|AREGBITCODE REGBITCODE:r CREGBITCODE {:RESULT = r;:}
 				;
 
-grupo ::= AGROUP contenido_registro AREGISTERS registros CREGISTERS CGROUP;
+grupo ::= 	AGROUP contenido_registro:c AREGISTERS registros:r CREGISTERS CGROUP
+			{:	c.setRegistros(r);
+				c.setGroup();
+				RESULT = c;:}
+			;
 
-registros ::=  registros_aux NAME;
-registros_aux ::= 	registros_aux NAME COMA
-					| NAME COMA
+registros ::=  	registros_aux:r NAME:n {:	r.push(n);
+											RESULT = r; :}
+				;
+registros_aux ::= 	registros_aux:r NAME:n COMA {:	r.push(n);
+													RESULT = r;:}
+					| NAME:n COMA {:	Stack stack = new Stack();
+										stack.push(n);
+										RESULT = stack;:}
 					;
 
 /*gramática bloque instrucciones*/

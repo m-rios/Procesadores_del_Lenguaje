@@ -60,7 +60,7 @@ in = DATA|MEM
 <YYINITIAL> {use}			{ return new Symbol(sym.USE, yyline, yyline, yytext());}
 <YYINITIAL> "</use>"		{ return new Symbol(sym.CUSE, yyline, yyline, yytext());}
 <YYINITIAL> "<bitSize>"		{ return new Symbol(sym.ABITSIZE, yyline, yyline, yytext());}
-<YYINITIAL> [1-9][0-9]*		{ return new Symbol(sym.BITSIZE, yyline, yyline, yytext());}
+<YYINITIAL> [1-9][0-9]*		{ return new Symbol(sym.BITSIZE, yyline, yyline, Integer.parseInt(yytext()));}
 <YYINITIAL> "</bitSize>"	{ return new Symbol(sym.CBITSIZE, yyline, yyline, yytext());}
 <YYINITIAL> "<regbitcode>"	{ return new Symbol(sym.AREGBITCODE, yyline, yyline, yytext());}
 <YYINITIAL> {regbitcode}	{ return new Symbol(sym.REGBITCODE, yyline, yyline, yytext());}

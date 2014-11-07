@@ -57,6 +57,10 @@ public class storeClass {
         bitCode = new String(b);
     }
 
+    public void setRegistros(Stack r){
+        registers = r;
+    }
+
     public String getRegName() {
         return regName;
     }
@@ -68,7 +72,7 @@ public class storeClass {
     public String toString() {
         String s = "Register: " + regName
                 + "\n\tUse: " + use.toString()
-                + "\n\tBisize: " + bitSize
+                + "\n\tBitsize: " + bitSize
                 + "\n\tBinary code: " + bitCode;
         if (group) {
             s = s + "\n\tRegisters grouped: "
