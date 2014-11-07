@@ -23,7 +23,7 @@ marca = (ident|date|name|use|bitSize|insBitCode)
 aEtiqueta = "<"{marca}">"
 cEtiqueta = "</"{marca}">"
 opcode = [A-Z]+
-in = {letra}{letra}?|DATA|MEM
+in = DATA|MEM
 
 %unicode
 %line
@@ -38,7 +38,6 @@ in = {letra}{letra}?|DATA|MEM
 <comment> . {/*ignorar*/}
 <comment> "</comment>" 		{ yybegin(YYINITIAL);}
 
-<YYINITIAL> {in}			{ return new Symbol(sym.IN, yyline, yyline, yytext());}
 <YYINITIAL> "<descr>" 		{ return new Symbol(sym.ADESCR, yyline, yyline, yytext());}
 <YYINITIAL> "</descr>" 		{ return new Symbol(sym.CDESCR, yyline, yyline, yytext());}
 <YYINITIAL> "<ident>" 		{ return new Symbol(sym.AIDENT, yyline, yyline, yytext());}
@@ -46,6 +45,7 @@ in = {letra}{letra}?|DATA|MEM
 <YYINITIAL> "<date>" 		{ return new Symbol(sym.ADATE, yyline, yyline, yytext());}
 <YYINITIAL> "</date>" 		{ return new Symbol(sym.CDATE, yyline, yyline, yytext());}
 
+<YYINITIAL> {in}			{ return new Symbol(sym.IN, yyline, yyline, yytext());}
 <YYINITIAL> {text} 		{ return new Symbol(sym.TEXT,yyline, yyline, yytext());}
 <YYINITIAL> {date}  		{ return new Symbol(sym.DATE, yyline, yyline, yytext());}
 
@@ -75,6 +75,8 @@ in = {letra}{letra}?|DATA|MEM
 
 <YYINITIAL> "<insns>"		{ return new Symbol(sym.AINSNS, yyline, yyline, yytext());}
 <YYINITIAL> "</insns>"		{ return new Symbol(sym.CINSNS, yyline, yyline, yytext());}
+<YYINITIAL> "<ins>"			{ return new Symbol(sym.AINS, yyline, yyline, yytext());}
+<YYINITIAL> "</ins>"		{ return new Symbol(sym.CINS, yyline, yyline, yytext());}
 <YYINITIAL> "<opcode>"		{ return new Symbol(sym.AOPCODE, yyline, yyline, yytext());}
 <YYINITIAL> {opcode}		{ return new Symbol(sym.OPCODE, yyline, yyline, yytext());}
 <YYINITIAL> "</opcode>"		{ return new Symbol(sym.COPCODE, yyline, yyline, yytext());}

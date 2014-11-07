@@ -1,6 +1,7 @@
 package analizador;
 import java_cup.runtime.*;
 import java.io.*;
+import java.util.Stack;
 
 /*User code*/
 
@@ -32,20 +33,8 @@ parser code {:
 	public void printData(){
 		upd.toString();
 	}
-
-	public void muerecabron(){
-		System.out.println(this.cur_token);
-	}
 :}
 
-action code{:
-
-private updClass upd = new updClass();
-public void printData(){
-	upd.toString();
-}
-
-:}
 
 /* Preliminaries to set up and use the scanner.  */
 // init with {: scanner.init();              :};
@@ -65,7 +54,7 @@ terminal int 		BITSIZE;
 terminal 			AINSNS, CINSNS, AOPCODE, COPCODE, AINSBITCODE;
 terminal 			CINSBITCODE, INSBITCODE, ABEHAV, CBEHAV, CIN, COUT, AOUT;
 terminal 			ACORCHETE, CCORCHETE, AIN, IN;
-//terminal 			IN, OUT, COMILLA, COMILLAS; //comilla -> simple comillas -> doble
+terminal 			AINS, CINS;
 
 
 
@@ -75,80 +64,123 @@ non terminal 		especificacion, bloque_descripcion, identificacion, fecha;
 non terminal 		bloque_almacenamiento, almacenamiento, registro, grupo;
 non terminal 		contenido_registro, registros, registros_aux, regbitcode;
 
-non terminal 		bloque_instrucciones, instrucciones, instruccion, entrada;
-non terminal 		salida, behav, in, bloque_in;
+non terminal 		bloque_instrucciones, instruccion, entrada;
+non terminal 		salida, in, bloque_in;
+non terminal Stack	behav, insbitcode, instrucciones;
 
 /* Precedences */
 // precedence left PLUS, MINUS;
 
 
 /* The grammar */
-especificacion ::= 	|AUPD bloque_descripcion bloque_almacenamiento bloque_instrucciones CUPD;
+especificacion ::= 	|AUPD bloque_descripcion:descr bloque_almacenamiento:store 
+					bloque_instrucciones:ins CUPD
+					{:	String text = 	"------------------------\n"+
+										"Descripcion:\n"+
+										"------------------------\n"+
+										descr+
+										"------------------------\n"+
+										"Almacenamiento:\n"+
+										"------------------------\n"+
+										// store+
+										"------------------------\n"+
+										"Instrucciones:\n"+
+										"------------------------\n"+
+										ins.toString();
+						System.out.println(text);:}
+					;
 //se acepta fichero vacío como válido
 
 /*gramatica bloque descripción*/
-bloque_descripcion ::= ADESCR identificacion fecha CDESCR
+bloque_descripcion ::= 	ADESCR identificacion:id fecha:date CDESCR 
+						{:RESULT = "ident: "+id+"\n date: "+date+"\n";:}
+						| error 
+						;
+
+identificacion ::= 	AIDENT TEXT:id CIDENT {:RESULT = id;:}
 					| error 
 					;
 
-identificacion ::= AIDENT TEXT CIDENT {:parser.muerecabron();:}
-					| error 
-					;
-
-fecha ::= |ADATE DATE CDATE
-			| error;
+fecha ::= 	|ADATE DATE:d CDATE {:RESULT = d;:}
+			| error
+			;
 
 /*gramática bloque almacenamiento*/
-bloque_almacenamiento ::= ASTORAGE almacenamiento CSTORAGE 
+bloque_almacenamiento ::= 	ASTORAGE almacenamiento CSTORAGE 
 							| error 
 							;
 
-almacenamiento ::= almacenamiento registro
-				| almacenamiento grupo
-				| registro
-				| grupo
-				;
+almacenamiento ::=	almacenamiento registro
+					| almacenamiento grupo
+					| registro
+					| grupo
+					;
 
 registro ::= AREGISTER contenido_registro CREGISTER;
 
-contenido_registro ::= ANAME NAME CNAME AUSE USE CUSE ABITSIZE BITSIZE CBITSIZE
-					regbitcode;
+contenido_registro ::= 	ANAME NAME CNAME AUSE USE CUSE ABITSIZE BITSIZE CBITSIZE
+						regbitcode
+						;
 
-regbitcode ::= |AREGBITCODE REGBITCODE CREGBITCODE;
+regbitcode ::=	|AREGBITCODE REGBITCODE CREGBITCODE
+				;
 
 grupo ::= AGROUP contenido_registro AREGISTERS registros CREGISTERS CGROUP;
 
 registros ::=  registros_aux NAME;
-registros_aux ::= registros_aux NAME COMA
+registros_aux ::= 	registros_aux NAME COMA
 					| NAME COMA
 					;
 
 /*gramática bloque instrucciones*/
-bloque_instrucciones ::= AINSNS instrucciones CINSNS
-						| error
-						;
+bloque_instrucciones ::= 	AINSNS instrucciones:i CINSNS {:RESULT = i;:}
+							| error
+							;
 
-instrucciones ::= instrucciones instruccion
-				| instruccion
+instrucciones ::= instrucciones:ins instruccion:in {:	ins.push(in);
+														RESULT = ins;:}
+				| instruccion:i {:	Stack ins = new Stack();
+									ins.push(i);
+									RESULT = ins;
+									:}
 				| error
 				;
 
-instruccion ::= AOPCODE TEXT COPCODE entrada salida AINSBITCODE INSBITCODE
-				CINSBITCODE ABEHAV behav CBEHAV;
+instruccion ::= AINS AOPCODE TEXT:op COPCODE entrada salida AINSBITCODE 
+				insbitcode:ins CINSBITCODE ABEHAV behav:be CBEHAV CINS
+				{:	insClass instruction = new insClass(op,ins,be);
+					RESULT = instruction;:}
+				;
 
+insbitcode ::= insbitcode:ins COMA INSBITCODE:i {:	ins.push(i);
+													RESULT = ins;
+													:}
+				| INSBITCODE:i {:	Stack s = new Stack();
+								s.push(i);
+								RESULT = s;
+								:}
+				;
+
+/*entradas / salidas*/
 entrada ::= | AIN bloque_in CIN
 			| error
 			;
 
-bloque_in ::= bloque_in COMA ACORCHETE in CCORCHETE
+bloque_in ::= 	bloque_in COMA ACORCHETE in CCORCHETE
 				| ACORCHETE in CCORCHETE
 				;
-in ::= in COMA IN
+in ::= 	in COMA IN
 		| IN
+		| in COMA NAME
+		| NAME
 		;
 
-salida ::= |AOUT ACORCHETE IN CCORCHETE COUT;
+salida ::= |AOUT ACORCHETE NAME CCORCHETE COUT;
 
-behav ::= behav COMA ACORCHETE TEXT CCORCHETE
-		| ACORCHETE TEXT CCORCHETE
+/*comportamiento*/
+behav ::= behav:be COMA ACORCHETE TEXT:b CCORCHETE {:	be.push(b);
+														RESULT = be; :}
+		| ACORCHETE TEXT:b CCORCHETE {:	Stack stack = new Stack();
+										stack.push(b);
+										RESULT = stack;:}
 		;
