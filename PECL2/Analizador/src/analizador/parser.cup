@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 
 parser code {:
 	public void syntax_error(Symbol cur_token){
-		report_error("Syntax error", cur_token);
+		report_error("Error sintactico", cur_token);
 	}
 	public void report_error(String message, Object info) {
        	StringBuffer m = new StringBuffer(message);
@@ -29,13 +29,6 @@ parser code {:
        	report_error(message, info);
 		System.exit(1);
     }
-    private updClass upd;
-    public void initData(){
-		this.upd = new updClass();
-	}
-	public void printData(){
-		upd.toString();
-	}
 :}
 
 
@@ -69,7 +62,7 @@ non terminal 		bloque_almacenamiento, registro, grupo;
 non terminal 		bloque_instrucciones, instruccion, entrada;
 non terminal 		salida, in, bloque_in;
 non terminal Stack	behav, insbitcode, instrucciones, registros_aux, registros;
-non terminal Stack	use, almacenamiento;
+non terminal Stack	use, sub_registros, grupos;
 non terminal String	regbitcode;
 non terminal storeClass	contenido_registro;
 
@@ -80,7 +73,16 @@ non terminal storeClass	contenido_registro;
 /* The grammar */
 especificacion ::= 	|AUPD bloque_descripcion:descr bloque_almacenamiento:store 
 					bloque_instrucciones:ins CUPD
-					{:	String text = 	"------------------------\n"+
+					{:	if (descr == null) {
+							descr = "N/A\n";
+						} 
+						if (store== null) {
+							store = "N/A\n";
+						}
+						if (ins== null) {
+							ins = "N/A\n";
+						}
+						String text = 	"------------------------\n"+
 										"Descripcion:\n"+
 										"------------------------\n"+
 										descr+
@@ -93,6 +95,7 @@ especificacion ::= 	|AUPD bloque_descripcion:descr bloque_almacenamiento:store
 										"------------------------\n"+
 										ins.toString();
 						System.out.println(text);:}
+					| error
 					;
 //se acepta fichero vacío como válido
 
@@ -103,7 +106,6 @@ bloque_descripcion ::= 	ADESCR identificacion:id fecha:date CDESCR
 						;
 
 identificacion ::= 	AIDENT TEXT:id CIDENT {:RESULT = id;:}
-					| error 
 					;
 
 fecha ::= 	|ADATE DATE:d CDATE 
@@ -118,25 +120,36 @@ fecha ::= 	|ADATE DATE:d CDATE
 					    RESULT = "Date Wrong";
 					}
 					:}
-			| error
 			;
 
 /*gramática bloque almacenamiento*/
-bloque_almacenamiento ::= 	ASTORAGE almacenamiento:a CSTORAGE {:RESULT = a;:}
+bloque_almacenamiento ::= 	ASTORAGE registros:r grupos:g CSTORAGE 
+									{:	Stack stack = new Stack();
+										stack.push(r);
+										stack.push(g);
+										RESULT = stack;
+										:}
+							| ASTORAGE registros:r CSTORAGE 
+									{:	Stack stack = new Stack();
+										stack.push(r);
+										RESULT = stack;
+										:}
 							| error 
 							;
 
-almacenamiento ::=	almacenamiento:a registro:r {:	a.push(r);
-												RESULT = a;:}
-					| almacenamiento:a grupo:g {:	a.push(g);
-													RESULT = a;:}
-					| registro:r {:	Stack stack = new Stack();
-									stack.push(r);
-									RESULT = stack;:}
-					| grupo:g {:	Stack stack = new Stack();
-									stack.push(g);
-									RESULT = stack;:}
-					;
+registros ::= registros:rs registro:r {:	rs.push(r);
+											RESULT = rs;	:}
+			| registro:r {:	Stack stack = new Stack();
+							stack.push(r);
+							RESULT = stack;
+							:}
+			;
+grupos ::= 	grupos:gs grupo:g {:	gs.push(g);
+									RESULT = gs;	:}
+			| grupo:g {:	Stack stack = new Stack();
+							stack.push(g);
+							RESULT = stack;	:}
+			;
 
 registro ::= AREGISTER contenido_registro:c CREGISTER {:	c.setRegister();
 															RESULT = c;:};
@@ -158,13 +171,13 @@ use ::=	use:us COMA USE:u {:	us.push(u);
 regbitcode ::=	|AREGBITCODE REGBITCODE:r CREGBITCODE {:RESULT = r;:}
 				;
 
-grupo ::= 	AGROUP contenido_registro:c AREGISTERS registros:r CREGISTERS CGROUP
+grupo ::= 	AGROUP contenido_registro:c AREGISTERS sub_registros:r CREGISTERS CGROUP
 			{:	c.setRegistros(r);
 				c.setGroup();
 				RESULT = c;:}
 			;
 
-registros ::=  	registros_aux:r NAME:n {:	r.push(n);
+sub_registros ::=  	registros_aux:r NAME:n {:	r.push(n);
 											RESULT = r; :}
 				;
 registros_aux ::= 	registros_aux:r NAME:n COMA {:	r.push(n);
@@ -185,7 +198,6 @@ instrucciones ::= instrucciones:ins instruccion:in {:	ins.push(in);
 									ins.push(i);
 									RESULT = ins;
 									:}
-				| error
 				;
 
 instruccion ::= AINS AOPCODE TEXT:op COPCODE entrada salida AINSBITCODE 
@@ -205,7 +217,6 @@ insbitcode ::= insbitcode:ins COMA INSBITCODE:i {:	ins.push(i);
 
 /*entradas / salidas*/
 entrada ::= | AIN bloque_in CIN
-			| error
 			;
 
 bloque_in ::= 	bloque_in COMA ACORCHETE in CCORCHETE
