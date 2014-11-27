@@ -164,7 +164,7 @@ registro ::= AREGISTER contenido_registro:c CREGISTER {:	c.setRegister();
 															if (registros.containsKey(c.getRegName())) {
 																error_semantico("Registro "+c.getRegName()+" ya existe",cright);
 															} else {
-																registros.put(c.getRegName(),c.getSize());
+																registros.put(c.getRegName(),c.getUse());
 															}
 															RESULT = c;:};
 
@@ -192,16 +192,26 @@ regbitcode ::=	|AREGBITCODE REGBITCODE:r CREGBITCODE {:RESULT = r;:}
 grupo ::= 	AGROUP contenido_registro:c AREGISTERS sub_registros:r CREGISTERS CGROUP
 			{:	c.setRegistros(r);
 				c.setGroup();
+				registros.put(c.getRegName(),c.getUse());
 				RESULT = c;:}
 			;
 
 sub_registros ::=  	registros_aux:r NAME:n {:	r.push(n);
+												if (!registros.containsKey(n)) {
+													error_semantico("Registro "+n+" no existe",nright+1);
+												}
 											RESULT = r; :}
 				;
 registros_aux ::= 	registros_aux:r NAME:n COMA {:	r.push(n);
+													if (!registros.containsKey(n)) {
+														error_semantico("Registro "+n+" no existe",nright+1);
+													}
 													RESULT = r;:}
 					| NAME:n COMA {:	Stack stack = new Stack();
 										stack.push(n);
+										if (!registros.containsKey(n)) {
+											error_semantico("Registro "+n+" no existe",nright+1);
+										}
 										RESULT = stack;:}
 					;
 
@@ -246,7 +256,17 @@ in ::= 	in COMA IN
 		| NAME
 		;
 
-salida ::= |AOUT ACORCHETE NAME CCORCHETE COUT;
+salida ::= |AOUT ACORCHETE NAME:n CCORCHETE COUT {:
+													if (registros.containsKey(n)) {
+														Stack s = (Stack) registros.get(n);	
+														if (s.contains("\"FlagVector\"")) {
+															error_semantico("El registro de destino no puede ser de tipo FlagVector",nright+1);
+														}
+													}else{
+														error_semantico("El registro "+n+" no existe",nright+1);
+													}
+													
+	:};
 
 /*comportamiento*/
 behav ::= behav:be COMA ACORCHETE TEXT:b CCORCHETE {:	be.push(b);

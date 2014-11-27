@@ -65,7 +65,7 @@
 		<ins>
 			<opcode>ADD</opcode>
 			<in>['A','BX',MEM], ['A',DATA], ['A',MEM]</in>
-			<out>['A']</out>
+			<out>['SI']</out>
 			<insbitcode>1111x</insbitcode>
 			<behav>[A=A+(DATA|MEMORY|REGISTRO)]</behav>
 		</ins>
@@ -88,7 +88,7 @@
 		<ins>
 			<opcode>MUL</opcode>
 			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
-			<out>['A']</out>
+			<out>['CX']</out>
 			<insbitcode>001xxyzz,001xxyzz</insbitcode>
 			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
 		</ins>
