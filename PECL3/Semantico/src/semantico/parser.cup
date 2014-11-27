@@ -1,10 +1,11 @@
-package analizador;
+package semantico;
 import java_cup.runtime.*;
 import java.io.*;
 import java.util.Stack;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Hashtable;
 
 /*User code*/
 
@@ -31,6 +32,14 @@ parser code {:
     }
 :}
 
+action code {:
+
+	private Hashtable registros = new Hashtable();
+
+	public void error_semantico(String msg, int line){
+		System.err.println("ERROR SEMANTICO en linea "+line+": "+msg);
+	}
+:}
 
 /* Preliminaries to set up and use the scanner.  */
 // init with {: scanner.init();              :};
@@ -152,17 +161,26 @@ grupos ::= 	grupos:gs grupo:g {:	gs.push(g);
 			;
 
 registro ::= AREGISTER contenido_registro:c CREGISTER {:	c.setRegister();
+															if (registros.containsKey(c.getRegName())) {
+																error_semantico("Registro "+c.getRegName()+" ya existe",cright);
+															} else {
+																registros.put(c.getRegName(),c.getSize());
+															}
 															RESULT = c;:};
 
 contenido_registro ::= 	ANAME NAME:n CNAME AUSE use:u CUSE ABITSIZE BITSIZE:b 
-						CBITSIZE regbitcode:r {:	
+						CBITSIZE regbitcode:r {:
+								if ((u.search("\"ProgramPC\"") != -1 || u.search("\"FlagVector\"") != -1) && u.size() > 1) {
+									error_semantico("Usos de registro incompatibles",uright+1);
+								}	
 								storeClass sc = new storeClass(n,u,b,r);
 								RESULT = sc;
 								:}
 						;
 
-use ::=	use:us COMA USE:u {:	us.push(u);
-						RESULT = us;:}
+use ::=	use:us COMA USE:u {:	
+								us.push(u);
+								RESULT = us;:}
 		| USE:u {:	Stack stack = new Stack();
 					stack.push(u);
 					RESULT = stack;:}

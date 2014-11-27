@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package analizador;
+package semantico;
 
 import java.util.Stack;
 
@@ -63,6 +63,14 @@ public class storeClass {
 
     public String getRegName() {
         return regName;
+    }
+
+    public int getSize() {
+        return bitSize;
+    }
+
+    public Stack getUse() {
+        return use;
     }
 
     public boolean isGroup() {

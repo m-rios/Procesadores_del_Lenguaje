@@ -22,3 +22,6 @@ hs_err_pid*
 UpdComp.lex.java
 parser.java
 sym.java
+/PECL3/Analizador/build/
+/PECL3/Semantico/nbproject/private/
+/PECL3/Semantico/build/
