@@ -8,30 +8,56 @@
 	<storage>
 		<comment> tres registros: </comment>
 		<register>
-			<name>'SI'</name>
-			<use>"StackPointer","FlagVector"</use>
-			<bitSize>16</bitSize>
+			<name>'AH'</name>
+			<use>"FlagVector"</use>
+			<bitSize>8</bitSize>
 			<regbitcode>010101b</regbitcode>
 		</register>
 		<register>
-			<name>'SP'</name>
-			<use>"AllPurpose","ProgramPC"</use>
+			<name>'AL'</name>
+			<use>"AllPurpose"</use>
+			<bitSize>8</bitSize>
+			<regbitcode>10010101b</regbitcode>
+		</register>
+		<register>
+			<name>'BL'</name>
+			<use>"ProgramPC"</use>
+			<bitSize>8</bitSize>
+			<regbitcode>10010101b</regbitcode>
+		</register>
+		<register>
+			<name>'BH'</name>
+			<use>"AllPurpose","Accumulator"</use>
+			<bitSize>16</bitSize>
+			<regbitcode>10010101b</regbitcode>
+		</register>
+        <register>
+			<name>'CH'</name>
+			<use>"AllPurpose"</use>
+			<bitSize>8</bitSize>
+			<regbitcode>10010101b</regbitcode>
+		</register>
+        <register>
+			<name>'CL'</name>
+			<use>"AllPurpose","Accumulator"</use>
+			<bitSize>8</bitSize>
+			<regbitcode>10010101b</regbitcode>
+		</register>
+		<register>
+			<name>'DH'</name>
+			<use>"AllPurpose","Accumulator"</use>
 			<bitSize>16</bitSize>
 			<regbitcode>10010101b</regbitcode>
 		</register>
 		<register>
-			<comment> Nombre T de 'Test', este registro esta para comprobar que
-				se le pueden asignar todos los usos existentes <comment>
-					 </comment>
-			<name>'T'</name>
-			<use>
-				"AllPurpose","Accumulator","ProgramPC","Index","FlagVector",
-				"StackPointer"
-			</use>
-			<bitSize>34</bitSize>
+			<name>'DL'</name>
+			<use>"AllPurpose","Accumulator"</use>
+			<bitSize>8</bitSize>
 			<regbitcode>10010101b</regbitcode>
 		</register>
+
 		<comment> cuatro grupos: </comment>
+		
 		<group>
 			<name>'AX'</name>
 			<use>"Accumulator"</use>
@@ -48,7 +74,7 @@
 		</group>
 		<group>
 			<name>'CX'</name>
-			<use>"Accumulator", "FlagVector"</use>
+			<use>"Accumulator"</use>
 			<bitSize>16</bitSize>
 			<regbitcode>011010b</regbitcode>
 			<registers>'CH','CL'</registers>
@@ -65,7 +91,7 @@
 		<ins>
 			<opcode>ADD</opcode>
 			<in>['A','BX',MEM], ['A',DATA], ['A',MEM]</in>
-			<out>['SI']</out>
+			<out>['DX']</out>
 			<insbitcode>1111x</insbitcode>
 			<behav>[A=A+(DATA|MEMORY|REGISTRO)]</behav>
 		</ins>
@@ -81,14 +107,14 @@
 		<ins>
 			<opcode>AND</opcode>
 			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
-			<out>['A']</out>
+			<out>['BL']</out>
 			<insbitcode>001xxyzz,001xxyzz</insbitcode>
 			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
 		</ins>
 		<ins>
 			<opcode>MUL</opcode>
 			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
-			<out>['CX']</out>
+			<out>['AX']</out>
 			<insbitcode>001xxyzz,001xxyzz</insbitcode>
 			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
 		</ins>

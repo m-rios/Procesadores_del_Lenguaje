@@ -2,69 +2,72 @@
 
 	<descr>
 		<ident>X8080</ident>
-		<date>31/40/1978</date>
+		<date>31/01/1978</date>
 	</descr>
 
 	<storage>
 		<comment> tres registros: </comment>
 		<register>
-			<name>'SP</name>
-			<use>"StackPointer"</use>
+			<name>'AH'</name>
+			<use>"ProgramPC","FlagVector"</use>
 			<bitSize>16</bitSize>
 			<regbitcode>010101b</regbitcode>
 		</register>
+
 		<register>
-			<name>'SI'</name>
-			<use>"Index",</use>
+			<name>'AL'</name>
+			<use>"ProgramPC","FlagVector"</use>
 			<bitSize>16</bitSize>
-			<regbitcode>10010101b</regbitcode>
+			<regbitcode>010101b</regbitcode>
 		</register>
+
 		<register>
-			<comment> Nombre T de 'Test', este registro esta para comprobar que
-				se le pueden asignar todos los usos existentes <comment>
-					 </comment>
-			<name>'T'</name>
-			<use>
-				"AllPurpose","Accumulator","ProgramPC","Index","FlagVector",
-				"StackPointer"
-			</use>
-			<bitSize>011</bitSize>
-			<regbitcode>10010101b</regbitcode>
+			<name>'BH'</name>
+			<use>"Accumulator","FlagVector","StackPointer"</use>
+			<bitSize>16</bitSize>
+			<regbitcode>010101b</regbitcode>
 		</register>
+
 		<comment> cuatro grupos: </comment>
+
 		<group>
 			<name>'AX'</name>
 			<use>"Accumulator"</use>
 			<bitSize>16</bitSize>
 			<regbitcode>0010b</regbitcode>
+			<registers>'AH','AL'</registers>
 		</group>
+
 		<group>
 			<name>'BX'</name>
-			<use>"Accumulator"</use>
-			<bitSize>16</bitSize>
-			<regbitcode>110010b</regbitcode>
-			<registers>'BH','BL'</registers>
+			<use>"Accumulator","ProgramPC","StackPointer"</use>
+			<bitSize>9</bitSize>
+			<regbitcode>0010b</regbitcode>
+			<registers>'AL','BH'</registers>
 		</group>
+
 		<group>
 			<name>'CX'</name>
-			<use>"Accumulator", "FlagVector"</use>
-			<bitSize>16</bitSize>
-			<regbitcode>011010b</regbitcode>
-			<registers>'CH','CL'</registers>
+			<use>"FlagVector","ProgramPC"</use>
+			<bitSize>80</bitSize>
+			<regbitcode>0010b</regbitcode>
+			<registers>'BH','AL'</registers>
 		</group>
+
 		<group>
 			<name>'DX'</name>
-			<use>"Accumulator", 	"AllPurpose"</use>
+			<use>"Accumulator","ProgramPC"</use>
 			<bitSize>16</bitSize>
-			<regbitcode>0111111010b</regbitcode>
-			<registers>'DH'</registers>
+			<regbitcode>0010b</regbitcode>
+			<registers>'BH','AL'</registers>
 		</group>
+
 	</storage>
 	<insns>
 		<ins>
 			<opcode>ADD</opcode>
-			<in>['A','BX',MEM], ['A',DATA], ['A',MEM] ERROR</in>
-			<out>['A']</out>
+			<in>['A','BX',MEM], ['A',DATA], ['A',MEM]</in>
+			<out>['AX']</out>
 			<insbitcode>1111x</insbitcode>
 			<behav>[A=A+(DATA|MEMORY|REGISTRO)]</behav>
 		</ins>
@@ -72,22 +75,22 @@
 			<opcode>SUB</opcode>
 			<comment>
                         <in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
-			<out>[A]</out>
+			<out>['A']</out>
                         </comment>
 			<insbitcode>001xxyzz,001xxyzz</insbitcode>
-			<behav>[A=A+BC] [A=A+B], [A=A+C], [A=A+DATA]</behav>
+			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
 		</ins>
 		<ins>
 			<opcode>AND</opcode>
 			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
-			<out>['A']</out>
+			<out>['AH']</out>
 			<insbitcode>001xxyzz,001xxyzz</insbitcode>
 			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
 		</ins>
 		<ins>
 			<opcode>MUL</opcode>
 			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
-			<out>['A']</out>
+			<out>['BH']</out>
 			<insbitcode>001xxyzz,001xxyzz</insbitcode>
 			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
 		</ins>

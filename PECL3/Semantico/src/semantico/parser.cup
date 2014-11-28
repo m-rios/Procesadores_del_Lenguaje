@@ -35,6 +35,7 @@ parser code {:
 action code {:
 
 	private Hashtable registros = new Hashtable();
+	private Hashtable registros_size = new Hashtable();
 
 	public void error_semantico(String msg, int line){
 		System.err.println("ERROR SEMANTICO en linea "+line+": "+msg);
@@ -165,6 +166,7 @@ registro ::= AREGISTER contenido_registro:c CREGISTER {:	c.setRegister();
 																error_semantico("Registro "+c.getRegName()+" ya existe",cright);
 															} else {
 																registros.put(c.getRegName(),c.getUse());
+																registros_size.put(c.getRegName(), c.getSize());
 															}
 															RESULT = c;:};
 
@@ -174,6 +176,7 @@ contenido_registro ::= 	ANAME NAME:n CNAME AUSE use:u CUSE ABITSIZE BITSIZE:b
 									error_semantico("Usos de registro incompatibles",uright+1);
 								}	
 								storeClass sc = new storeClass(n,u,b,r);
+								sc.setRegistrosGlobal(registros_size);
 								RESULT = sc;
 								:}
 						;
@@ -193,6 +196,10 @@ grupo ::= 	AGROUP contenido_registro:c AREGISTERS sub_registros:r CREGISTERS CGR
 			{:	c.setRegistros(r);
 				c.setGroup();
 				registros.put(c.getRegName(),c.getUse());
+				registros_size.put(c.getRegName(), c.getSize());
+				if (!c.isCorrect()) {
+					error_semantico("Tamano de grupo incoherente",cright);
+				}
 				RESULT = c;:}
 			;
 

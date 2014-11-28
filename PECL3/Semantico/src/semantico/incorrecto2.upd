@@ -1,0 +1,65 @@
+<upd>
+
+	<descr>
+		<ident>X8080</ident>
+		<date>31/01/1978</date>
+	</descr>
+
+	<storage>
+	    <register>
+			<name>'CL'</name>
+			<use>"AllPurpose"</use>
+			<bitSize>16</bitSize>
+			<regbitcode>10010101b</regbitcode>
+		</register>
+	
+		<group>
+			<name>'AX'</name>
+			<use>"Accumulator"</use>
+			<bitSize>16</bitSize>
+			<regbitcode>0010b</regbitcode>
+			<registers>'AH','CL'</registers>
+		</group>
+	
+		<group>
+			<name>'AX'</name>
+			<use>"Accumulator"</use>
+			<bitSize>16</bitSize>
+			<regbitcode>0010b</regbitcode>
+			<registers>'AH','AL'</registers>
+		</group>
+
+	</storage>
+	<insns>
+		<ins>
+			<opcode>ADD</opcode>
+			<in>['A','BX',MEM], ['A',DATA], ['A',MEM]</in>
+			<out>['SI']</out>
+			<insbitcode>1111x</insbitcode>
+			<behav>[A=A+(DATA|MEMORY|REGISTRO)]</behav>
+		</ins>
+		<ins>
+			<opcode>SUB</opcode>
+			<comment>
+                        <in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
+			<out>['A']</out>
+                        </comment>
+			<insbitcode>001xxyzz,001xxyzz</insbitcode>
+			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
+		</ins>
+		<ins>
+			<opcode>AND</opcode>
+			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
+			<out>['A']</out>
+			<insbitcode>001xxyzz,001xxyzz</insbitcode>
+			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
+		</ins>
+		<ins>
+			<opcode>MUL</opcode>
+			<in>['A','BC'], ['A','B'], ['A','C'], ['A',DATA]</in>
+			<out>['CL']</out>
+			<insbitcode>001xxyzz,001xxyzz</insbitcode>
+			<behav>[A=A+BC], [A=A+B], [A=A+C], [A=A+DATA]</behav>
+		</ins>
+	</insns>
+</upd>

@@ -5,6 +5,7 @@
  */
 package semantico;
 
+import java.util.Hashtable;
 import java.util.Stack;
 
 /**
@@ -17,6 +18,7 @@ public class storeClass {
     private boolean group;
     private Integer bitSize;
     private String bitCode;
+    private Hashtable registros_size;
 // in java.util.Stack and
     public Stack use; // represents a last-in-first-out (LIFO) stack
     public Stack registers; //registers in a group
@@ -35,6 +37,21 @@ public class storeClass {
     storeClass(String r, Integer i, String bc, Stack s, Stack n) {
         this(r, s, i, bc);
         registers = n;
+    }
+
+    public void setRegistrosGlobal(Hashtable t) {
+        registros_size = t;
+    }
+
+    public boolean isCorrect() {
+        int size = 0;
+        while (!registers.isEmpty()) {
+            String r = (String) registers.pop();
+            if (registros_size.containsKey(r)) {
+                size += (int)registros_size.get(r);
+            }
+        }
+        return size >= this.bitSize;
     }
 
     public void setRegName(String n) {
